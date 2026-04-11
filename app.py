@@ -5,7 +5,7 @@ with col1:
     st.image("IMG_0956.png")
 
 with col2:
-            st.title("Mon calculateur de réduction")
+        st.title("Mon calculateur de réduction")
         st.subheader("Hacker Cosmic 1CA 2026")
 
 
