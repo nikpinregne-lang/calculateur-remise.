@@ -1,7 +1,11 @@
 import streamlit as st
-st.image("IMG_0956.png", width=150)
+col1, col2 = st.columns([0.2, 0.8])
 
-st.title("🏷️ Mon calculateur de réduction Hacker Cosmic 1CA ")
+with col1:
+    st.image("IMG_0956.png")
+
+with col2:
+    st.title("Mon calculateur de réduction Hacker Cosmic 1CA")
 
 # Saisie des valeurs
 prix_initial = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0)
