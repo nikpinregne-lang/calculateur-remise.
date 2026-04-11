@@ -1,4 +1,5 @@
 import streamlit as st
+st.image("IMG_0956.png", width=150)
 
 st.title("🏷️ Mon calculateur de réduction Hacker Cosmic 1CA ")
 
