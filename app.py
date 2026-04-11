@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.title("🏷️ Mon Calculateur de Réduction")
+st.title("🏷️Mon calculateur de réduction Hacker Cosmic 1CA ")
 
 # Saisie des valeurs
 prix_initial = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0)
