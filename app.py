@@ -1,5 +1,8 @@
 import streamlit as st
+st.set_page_config(page_title="Hacker Cosmic", page_icon="IMG_0956.png")
+
 col1, col2 = st.columns([0.15, 0.85])
+
 
 
 with col1:
