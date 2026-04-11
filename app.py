@@ -5,7 +5,9 @@ with col1:
     st.image("IMG_0956.png")
 
 with col2:
-    st.title("Mon calculateur de réduction Hacker Cosmic 1CA 2026")
+            st.title("Mon calculateur de réduction")
+        st.subheader("Hacker Cosmic 1CA 2026")
+
 
 # Saisie des valeurs
 prix_initial = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0)
