@@ -1,5 +1,6 @@
 import streamlit as st
-col1, col2 = st.columns([0.2, 0.8])
+col1, col2 = st.columns([0.15, 0.85])
+
 
 with col1:
     st.image("IMG_0956.png")
