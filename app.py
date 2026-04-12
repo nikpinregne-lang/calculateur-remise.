@@ -109,5 +109,31 @@ pourcentage_tip = st.slider("Pourboire (%)", 0, 30, 10)
 total_avec_tip = note * (1 + pourcentage_tip/100)
 
 st.info(f"Chacun doit payer : **{total_avec_tip / amis:.2f} €**")
+st.divider()
+st.subheader("📐 Assistant de Géométrie")
+
+forme = st.selectbox("Choisis une forme", ["Rectangle", "Triangle", "Cercle"])
+
+if forme == "Rectangle":
+    l = st.number_input("Longueur ($L$)", min_value=0.0, value=10.0)
+    h = st.number_input("Largeur ($l$)", min_value=0.0, value=5.0)
+    aire = l * h
+    perimetre = 2 * (l + h)
+    st.write(f"**Formule de l'aire :** $L \\times l$")
+    st.success(f"Aire : **{aire}** | Périmètre : **{perimetre}**")
+
+elif forme == "Triangle":
+    b = st.number_input("Base ($b$)", min_value=0.0, value=10.0)
+    h = st.number_input("Hauteur ($h$)", min_value=0.0, value=5.0)
+    aire = (b * h) / 2
+    st.write(f"**Formule :** $(b \\times h) / 2$")
+    st.success(f"Aire du triangle : **{aire}**")
+
+elif forme == "Cercle":
+    r = st.number_input("Rayon ($r$)", min_value=0.0, value=5.0)
+    aire = 3.14159 * (r ** 2)
+    perimetre = 2 * 3.14159 * r
+    st.write(f"**Formule :** $\pi \\times r^2$")
+    st.success(f"Aire : **{aire:.2f}** | Périmètre : **{perimetre:.2f}**")
 
 
