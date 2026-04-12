@@ -21,7 +21,7 @@ with col_gauche:
     prix_initial = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0)
 
 with col_droite:
-        pourcentage = st.number_input("Réduction (%)", 0, 100, 15)
+pourcentage = st.slider("Choisis ta réduction (%)", 0, 100, 10, key="valeur_remise")        
 
 
 
