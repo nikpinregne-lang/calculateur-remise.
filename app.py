@@ -1,4 +1,6 @@
 import streamlit as st
+import random
+
 st.set_page_config(page_title="Hacker Cosmic", page_icon="IMG_0956.png")
 
 col1, col2 = st.columns([0.15, 0.85])
@@ -48,20 +50,23 @@ elif pourcentage > 0:
 
 st.balloons()
 
+st.divider()
+st.subheader("🎮 Exercice : Le Juste Prix")
 
-# --- SECTION JEU (Tout en bas) ---
-st.divider() # Ajoute une ligne de séparation
-st.subheader("🎮 Le Défi du Hacker Cosmic")
+# L'ordinateur choisit un nombre s'il n'y en a pas encore
+if 'cible' not in st.session_state:
+    st.session_state.cible = 20.0
 
-# On fixe un objectif à atteindre
-prix_cible = 20.0 
-st.write(f"🎯 **Défi :** Modifie le prix et la réduction pour tomber pile sur **{prix_cible} €** !")
+# Bouton pour changer d'exercice
+if st.button("🎲 Nouveau défi"):
+    st.session_state.cible = float(random.randint(10, 80))
 
-# On vérifie si le joueur a gagné
-if prix_final == prix_cible:
+cible_actuelle = st.session_state.cible
+st.write(f"🎯 **Ton défi :** Trouve la réduction pour arriver à **{cible_actuelle} €** !")
+
+# Vérification pour gagner
+if prix_final == cible_actuelle:
     st.balloons()
     st.snow()
-    st.confetti = True # (Juste pour le style)
-    st.success("🏆 BRAVO ! Tu as le compte juste ! Tu es un génie des maths.")
-elif prix_final < prix_cible + 2 and prix_final > prix_cible - 2:
-    st.info("🔥 Tu chauffes ! Tu es presque sur le prix cible...")
+    st.success(f"🏆 BRAVO ! Tu as trouvé {cible_actuelle} € !")
+
