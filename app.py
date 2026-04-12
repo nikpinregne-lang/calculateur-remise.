@@ -96,5 +96,18 @@ with col_c2:
         st.metric("Résultat", resultat_mini)
     except:
         st.write("Format : 2*5")
+st.divider()
+st.subheader("🍴 Aide au Restaurant")
+
+c1, c2 = st.columns(2)
+with c1:
+    note = st.number_input("Montant total (€)", min_value=0.0, value=50.0)
+with c2:
+    amis = st.number_input("Nombre de personnes", min_value=1, value=2)
+
+pourcentage_tip = st.slider("Pourboire (%)", 0, 30, 10)
+total_avec_tip = note * (1 + pourcentage_tip/100)
+
+st.info(f"Chacun doit payer : **{total_avec_tip / amis:.2f} €**")
 
 
