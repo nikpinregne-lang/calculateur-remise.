@@ -14,8 +14,14 @@ with col2:
 
 
 # Saisie des valeurs
-prix_initial = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0)
-pourcentage = st.number_input("Réduction (%)", min_value=0.0, max_value=100.0, value=10.0)
+col_gauche, col_droite = st.columns(2)
+
+with col_gauche:
+    prix_initial = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0)
+
+with col_droite:
+    pourcentage = st.number_input("Réduction (%)", min_value=0.0, max_value=100.0, value=10.0)
+
 
 # Calculs
 remise = (prix_initial * pourcentage) / 100
@@ -23,4 +29,10 @@ prix_final = prix_initial - remise
 
 # Affichage
 st.divider()
-st.metric(label="Prix après réduction", value=f"{prix_final} €", delta=f"-{remise} €")
+# Affichage stylé
+st.metric()
+    label="✅ Prix après réduction", 
+    value=f"{prix_final} €", 
+    delta=f"-{remise} €", 
+    delta_color="inverse"
+
