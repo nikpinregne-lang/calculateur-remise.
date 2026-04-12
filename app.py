@@ -37,3 +37,4 @@ st.metric(
     delta_color="inverse"
 )
 st.balloons()
+st.audio("https://soundjay.com", format="audio/mpeg", autoplay=True)
