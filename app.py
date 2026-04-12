@@ -50,23 +50,35 @@ elif pourcentage > 0:
 
 st.balloons()
 
+# --- SECTION JEU AVEC SCORE ---
 st.divider()
-st.subheader("🎮 Exercice : Le Juste Prix")
+st.subheader("🎮 Le Défi du Hacker Cosmic")
 
-# L'ordinateur choisit un nombre s'il n'y en a pas encore
+# 1. Initialisation du score (on le crée s'il n'existe pas)
+if 'score' not in st.session_state:
+    st.session_state.score = 0
+
+# 2. Affichage du score en haut du jeu
+st.info(f"🏆 Ton Score : {st.session_state.score} points")
+
 if 'cible' not in st.session_state:
     st.session_state.cible = 20.0
 
-# Bouton pour changer d'exercice
 if st.button("🎲 Nouveau défi"):
     st.session_state.cible = float(random.randint(10, 80))
+    st.session_state.gagne = False # On permet de gagner à nouveau
 
 cible_actuelle = st.session_state.cible
 st.write(f"🎯 **Ton défi :** Trouve la réduction pour arriver à **{cible_actuelle} €** !")
 
-# Vérification pour gagner
+# 3. Vérification avec ajout de point
 if prix_final == cible_actuelle:
+    if not st.session_state.get('gagne', False):
+        st.session_state.score += 1 # On ajoute 1 point !
+        st.session_state.gagne = True # On marque que c'est gagné pour ce nombre
+    
     st.balloons()
     st.snow()
-    st.success(f"🏆 BRAVO ! Tu as trouvé {cible_actuelle} € !")
+    st.success(f"🏆 BRAVO ! +1 point ! Score : {st.session_state.score}")
+
 
