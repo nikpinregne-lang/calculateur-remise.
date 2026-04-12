@@ -21,7 +21,24 @@ st.markdown("""
         z-index: -1;
         opacity: 0.4;
         animation: move-twinkle-back 200s linear infinite;
+    }    /* Titre en Néon Rose */
+    h1 {
+        color: #FF00FF !important;
+        text-shadow: 0 0 5px #FF00FF, 0 0 10px #FF00FF, 0 0 20px #FF00FF !important;
     }
+
+    /* Textes et étiquettes en Néon Bleu Cyan */
+    h2, h3, label, p, span {
+        color: #00FFFF !important;
+        text-shadow: 0 0 5px #00FFFF, 0 0 10px #00FFFF !important;
+    }
+
+    /* Chiffres des résultats en Néon Vert */
+    .stMetric div {
+        color: #39FF14 !important;
+        text-shadow: 0 0 10px #39FF14 !important;
+    }
+
     </style>
     """, unsafe_allow_html=True)
 
