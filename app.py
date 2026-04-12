@@ -26,6 +26,40 @@ st.markdown("""
         color: #FF00FF !important;
         text-shadow: 0 0 5px #FF00FF, 0 0 10px #FF00FF, 0 0 20px #FF00FF !important;
     }
+# --- 1. CONFIGURATION DU MENU (Ligne 29) ---
+with st.sidebar:
+    st.title("🚀 Menu Hacker")
+    menu = st.radio("Aller vers :", ["💰 Calculateur", "📐 Maths & Géo", "🎮 Défi Jeu"])
+    st.write("---")
+    st.caption("Site créé par le Hacker Cosmic")
+
+# --- 2. SECTION MATHS & GÉO (Avec le point '.' pour ton prof) ---
+if menu == "📐 Maths & Géo":
+    st.header("📐 Espace Mathématiques")
+    
+    forme = st.selectbox("Choisis une forme", ["Rectangle", "Triangle", "Cercle"])
+    
+    if forme == "Rectangle":
+        L = st.number_input("Longueur (L)", value=10.0)
+        l = st.number_input("Largeur (l)", value=5.0)
+        st.write(f"**Formule :** $L \cdot l$") # Le point magique !
+        st.success(f"Aire = {L * l}")
+        
+    elif forme == "Triangle":
+        b = st.number_input("Base (b)", value=10.0)
+        h = st.number_input("Hauteur (h)", value=5.0)
+        st.write(f"**Formule :** $(b \cdot h) / 2$")
+        st.success(f"Aire = {(b * h) / 2}")
+
+# --- 3. SECTION CALCULATEUR ---
+elif menu == "💰 Calculateur":
+    st.header("💰 Calculateur de Soldes")
+    # Remets ici ton code de prix_initial et pourcentage (avec décalage à droite !)
+
+# --- 4. SECTION JEU ---
+elif menu == "🎮 Défi Jeu":
+    st.header("🎮 Le Défi du Hacker")
+    # Remets ici ton code de score et de cible (avec décalage à droite !)
 
     /* Textes et étiquettes en Néon Bleu Cyan */
     h2, h3, label, p, span {
