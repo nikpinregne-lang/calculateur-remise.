@@ -65,7 +65,7 @@ with col2:
         st.components.v1.html("""
     <script>
         function parler() {
-            var msg = new SpeechSynthesisUtterance("Bienvenue sur le site du Hacker Cosmic !");
+            var msg = new SpeechSynthesisUtterance("Bienvenue sur le site du Hacker Cosmic de Règne !");
             msg.lang = 'fr-FR';
             window.speechSynthesis.speak(msg);
         }
@@ -110,7 +110,7 @@ if pourcentage >= 50:
 elif pourcentage > 0:
     st.success("💰 Super économie !")
 
-st.balloons()
+
 
 # --- SECTION JEU AMÉLIORÉE (Remplace les lignes 53 à 82) ---
 st.divider()
