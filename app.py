@@ -13,7 +13,7 @@ with col1:
 with col2:
         st.title("Mon calculateur de réduction")
         st.markdown("<p style='color: #00BFFF; font-size: 20px; font-weight: bold;'>Hacker Cosmic 1CA 2026</p>", unsafe_allow_html=True)
-    st.components.v1.html("""
+        st.components.v1.html("""
     <script>
         function parler() {
             var msg = new SpeechSynthesisUtterance("Bienvenue sur le site du Hacker Cosmic !");
