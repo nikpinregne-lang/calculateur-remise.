@@ -30,9 +30,9 @@ prix_final = prix_initial - remise
 # Affichage
 st.divider()
 # Affichage stylé
-st.metric()
+st.metric(
     label="✅ Prix après réduction", 
     value=f"{prix_final} €", 
     delta=f"-{remise} €", 
     delta_color="inverse"
-
+)
