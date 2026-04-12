@@ -42,5 +42,5 @@ elif pourcentage > 0:
     st.success("💰 Super économie !")
 
 st.balloons()
-st.audio("https://google.com", autoplay=True)
+
 
