@@ -2,6 +2,28 @@ import streamlit as st
 import random
 
 st.set_page_config(page_title="Hacker Cosmic", page_icon="IMG_0956.png")
+st.markdown("""
+    <style>
+    .stApp {
+        background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+        color: white;
+    }
+    /* Animation des étoiles */
+    @keyframes move-twinkle-back {
+        from {background-position:0 0;}
+        to {background-position:-10000px 5000px;}
+    }
+    .stApp::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: transparent url('https://transparenttextures.com') repeat;
+        z-index: -1;
+        opacity: 0.4;
+        animation: move-twinkle-back 200s linear infinite;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 col1, col2 = st.columns([0.15, 0.85])
 
