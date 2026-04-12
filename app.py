@@ -25,7 +25,7 @@ pourcentage = st.slider("Choisis ta réduction (%)", 0, 100, 10, key="valeur_rem
 
 
 
-pourcentage = st.slider("Choisis ta réduction (%)", 0, 100, 10, key="valeur_remise")
+
 
 
 # Calculs
