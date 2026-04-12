@@ -36,3 +36,4 @@ st.metric(
     delta=f"-{remise} €", 
     delta_color="inverse"
 )
+st.balloons()
