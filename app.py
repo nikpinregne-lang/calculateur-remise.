@@ -49,3 +49,19 @@ elif pourcentage > 0:
 st.balloons()
 
 
+# --- SECTION JEU (Tout en bas) ---
+st.divider() # Ajoute une ligne de séparation
+st.subheader("🎮 Le Défi du Hacker Cosmic")
+
+# On fixe un objectif à atteindre
+prix_cible = 20.0 
+st.write(f"🎯 **Défi :** Modifie le prix et la réduction pour tomber pile sur **{prix_cible} €** !")
+
+# On vérifie si le joueur a gagné
+if prix_final == prix_cible:
+    st.balloons()
+    st.snow()
+    st.confetti = True # (Juste pour le style)
+    st.success("🏆 BRAVO ! Tu as le compte juste ! Tu es un génie des maths.")
+elif prix_final < prix_cible + 2 and prix_final > prix_cible - 2:
+    st.info("🔥 Tu chauffes ! Tu es presque sur le prix cible...")
