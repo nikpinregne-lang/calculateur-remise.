@@ -80,5 +80,21 @@ if prix_final == cible_actuelle:
     st.balloons()
     st.snow()
     st.success(f"🏆 BRAVO ! +1 point ! Score : {st.session_state.score}")
+st.divider()
+st.subheader("📟 Mini-Calculatrice Rapide")
+
+# On crée deux colonnes pour que ce soit joli
+col_c1, col_c2 = st.columns(2)
+
+with col_c1:
+    operation = st.text_input("Tape ton calcul (ex: 12*4)", value="10+10")
+
+with col_c2:
+    try:
+        # Cette fonction calcule le texte automatiquement !
+        resultat_mini = eval(operation)
+        st.metric("Résultat", resultat_mini)
+    except:
+        st.write("Format : 2*5")
 
 
