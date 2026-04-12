@@ -50,36 +50,39 @@ elif pourcentage > 0:
 
 st.balloons()
 
-# --- SECTION JEU AVEC SCORE ---
+# --- SECTION JEU AMÉLIORÉE (Remplace les lignes 53 à 82) ---
 st.divider()
 st.subheader("🎮 Le Défi du Hacker Cosmic")
 
-# 1. Initialisation du score (on le crée s'il n'existe pas)
 if 'score' not in st.session_state:
     st.session_state.score = 0
-
-# 2. Affichage du score en haut du jeu
-st.info(f"🏆 Ton Score : {st.session_state.score} points")
-
 if 'cible' not in st.session_state:
     st.session_state.cible = 20.0
 
-if st.button("🎲 Nouveau défi"):
-    st.session_state.cible = float(random.randint(10, 80))
-    st.session_state.gagne = False # On permet de gagner à nouveau
+col_jeu1, col_jeu2 = st.columns(2)
 
-cible_actuelle = st.session_state.cible
-st.write(f"🎯 **Ton défi :** Trouve la réduction pour arriver à **{cible_actuelle} €** !")
+with col_jeu1:
+    st.info(f"🏆 Score : {st.session_state.score}")
+    if st.button("🎲 Nouveau défi"):
+        st.session_state.cible = float(random.randint(10, 80))
+        st.session_state.gagne = False
 
-# 3. Vérification avec ajout de point
-if prix_final == cible_actuelle:
+with col_jeu2:
+    # Ce curseur ne sert que pour le jeu !
+    p_jeu = st.slider("Ajuste pour gagner !", 0, 100, 10, key="slider_jeu")
+    # On calcule le prix du jeu ici avec le nouveau curseur
+    prix_jeu = prix_initial * (1 - p_jeu / 100)
+    st.write(f"🎯 Cible : **{st.session_state.cible} €**")
+    st.write(f"💵 Ton test : **{round(prix_jeu, 2)} €**")
+
+# Vérification de la victoire
+if round(prix_jeu, 2) == st.session_state.cible:
     if not st.session_state.get('gagne', False):
-        st.session_state.score += 1 # On ajoute 1 point !
-        st.session_state.gagne = True # On marque que c'est gagné pour ce nombre
-    
+        st.session_state.score += 1
+        st.session_state.gagne = True
     st.balloons()
-    st.snow()
-    st.success(f"🏆 BRAVO ! +1 point ! Score : {st.session_state.score}")
+    st.success("🏆 COMPTE EST BON !")
+
 st.divider()
 st.subheader("📟 Mini-Calculatrice Rapide")
 
