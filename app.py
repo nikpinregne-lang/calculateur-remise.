@@ -38,6 +38,16 @@ st.markdown("""
         color: #39FF14 !important;
         text-shadow: 0 0 10px #39FF14 !important;
     }
+    /* Bordure lumineuse pour ton logo */
+    img {
+        border-radius: 20px;
+        border: 3px solid #00FFFF;
+        box-shadow: 0 0 20px #00FFFF;
+        transition: 0.5s;
+    }
+    img:hover {
+        transform: scale(1.1);
+    }
 
     </style>
     """, unsafe_allow_html=True)
