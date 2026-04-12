@@ -36,6 +36,11 @@ st.metric(
     delta=f"-{remise} €", 
     delta_color="inverse"
 )
+if pourcentage >= 50:
+    st.warning("🔥 C'est une affaire de dingue !")
+elif pourcentage > 0:
+    st.success("💰 Super économie !")
+
 st.balloons()
 st.audio("https://google.com", autoplay=True)
 
