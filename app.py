@@ -142,7 +142,7 @@ if round(prix_jeu, 2) == st.session_state.cible:
     if not st.session_state.get('gagne', False):
         st.session_state.score += 1
         st.session_state.gagne = True
-    st.balloons()
+    
     st.success("🏆 COMPTE EST BON !")
 
 st.divider()
