@@ -1,14 +1,16 @@
 import streamlit as st
 import random
 
-st.set_page_config(page_title="Hacker Cosmic", page_icon="IMG_0956.png")
+# 1. Configuration de la page
+st.set_page_config(page_title="Hacker Cosmic Calc", page_icon="💰")
+
+# 2. Style Néon et Étoiles (CSS)
 st.markdown("""
     <style>
     .stApp {
         background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
         color: white;
     }
-    /* Animation des étoiles */
     @keyframes move-twinkle-back {
         from {background-position:0 0;}
         to {background-position:-10000px 5000px;}
@@ -21,252 +23,86 @@ st.markdown("""
         z-index: -1;
         opacity: 0.4;
         animation: move-twinkle-back 200s linear infinite;
-    }    /* Titre en Néon Rose */
-    h1 {
-        color: #FF00FF !important;
-        text-shadow: 0 0 5px #FF00FF, 0 0 10px #FF00FF, 0 0 20px #FF00FF !important;
     }
-# --- 1. CONFIGURATION DU MENU (Ligne 29) ---
-with st.sidebar:
-    st.title("🚀 Menu Hacker")
-    menu = st.radio("Aller vers :", ["💰 Calculateur", "📐 Maths & Géo", "🎮 Défi Jeu"])
-    st.write("---")
-    st.caption("Site créé par le Hacker Cosmic")
-
-# --- 2. SECTION MATHS & GÉO (Avec le point '.' pour ton prof) ---
-if menu == "📐 Maths & Géo":
-    st.header("📐 Espace Mathématiques")
-    
-    forme = st.selectbox("Choisis une forme", ["Rectangle", "Triangle", "Cercle"])
-    
-    if forme == "Rectangle":
-        L = st.number_input("Longueur (L)", value=10.0)
-        l = st.number_input("Largeur (l)", value=5.0)
-        st.write(f"**Formule :** $L \cdot l$") # Le point magique !
-        st.success(f"Aire = {L * l}")
-        
-    elif forme == "Triangle":
-        b = st.number_input("Base (b)", value=10.0)
-        h = st.number_input("Hauteur (h)", value=5.0)
-        st.write(f"**Formule :** $(b \cdot h) / 2$")
-        st.success(f"Aire = {(b * h) / 2}")
-
-# --- 3. SECTION CALCULATEUR ---
-elif menu == "💰 Calculateur":
-    st.header("💰 Calculateur de Soldes")
-    # Remets ici ton code de prix_initial et pourcentage (avec décalage à droite !)
-    col_gauche, col_droite = st.columns(2)
-    with col_gauche:
-        prix_initial = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0)
-    with col_droite:
-        pourcentage = st.slider("Réduction (%)", 0, 100, 20)
-    if 'score' not in st.session_state:
-        st.session_state.score = 0
-    if 'cible' not in st.session_state:
-        st.session_state.cible = 20.0
-
-    col_j1, col_j2 = st.columns(2)
-    with col_j1:
-        st.info(f"🏆 Score : {st.session_state.score}")
-        if st.button("🎲 Nouveau défi"):
-            import random
-            st.session_state.cible = float(random.randint(10, 80))
-            st.session_state.gagne = False
-
-    with col_j2:
-        p_jeu = st.slider("Ajuste la réduction !", 0, 100, 10, key="slider_jeu")
-        prix_jeu = 100 * (1 - p_jeu / 100) # On utilise 100€ comme base
-        st.write(f"🎯 Cible : **{st.session_state.cible} €**")
-        st.write(f"💵 Ton test : **{round(prix_jeu, 2)} €**")
-
-    if round(prix_jeu, 2) == st.session_state.cible:
-        if not st.session_state.get('gagne', False):
-            st.session_state.score += 1
-            st.session_state.gagne = True
-        st.balloons()
-        st.success("🏆 COMPTE EST BON ! +1 point")
-
-    remise = (prix_initial * pourcentage) / 100
-    prix_final = prix_initial - remise
-    st.metric(label="✅ Prix après réduction", value=f"{prix_final} €", delta=f"-{remise} €", delta_color="inverse")
-
-# --- 4. SECTION JEU ---
-elif menu == "🎮 Défi Jeu":
-    st.header("🎮 Le Défi du Hacker")
-    # Remets ici ton code de score et de cible (avec décalage à droite !)
-
-    /* Textes et étiquettes en Néon Bleu Cyan */
-    h2, h3, label, p, span {
-        color: #00FFFF !important;
-        text-shadow: 0 0 5px #00FFFF, 0 0 10px #00FFFF !important;
-    }
-
-    /* Chiffres des résultats en Néon Vert */
-    .stMetric div {
-        color: #39FF14 !important;
-        text-shadow: 0 0 10px #39FF14 !important;
-    }
-    /* Bordure lumineuse pour ton logo */
-    img {
-        border-radius: 20px;
-        border: 3px solid #00FFFF;
-        box-shadow: 0 0 20px #00FFFF;
-        transition: 0.5s;
-    }
-    img:hover {
-        transform: scale(1.1);
-    }
-
+    h1 { color: #FF00FF !important; text-shadow: 0 0 10px #FF00FF; }
+    h2, h3, label, p, span { color: #00FFFF !important; text-shadow: 0 0 5px #00FFFF; }
+    .stMetric div { color: #39FF14 !important; text-shadow: 0 0 10px #39FF14; }
+    img { border-radius: 20px; border: 3px solid #00FFFF; box-shadow: 0 0 20px #00FFFF; }
     </style>
     """, unsafe_allow_html=True)
 
-col1, col2 = st.columns([0.15, 0.85])
-
-
-
+# 3. En-tête (Logo + Titre + Voix)
+col1, col2 = st.columns([1, 2])
 with col1:
     st.image("IMG_0956.png")
-
 with col2:
-        st.title("Mon calculateur de réduction")
-        st.markdown("<p style='color: #00BFFF; font-size: 20px; font-weight: bold;'>Hacker Cosmic 1CA 2026</p>", unsafe_allow_html=True)
-        st.components.v1.html("""
-    <script>
-        function parler() {
-            var msg = new SpeechSynthesisUtterance("Bienvenue sur le site du Hacker Cosmic de Règne !");
-            msg.lang = 'fr-FR';
-            window.speechSynthesis.speak(msg);
-        }
-        window.onload = parler;
-    </script>
-    <button onclick="parler()" style="background-color: #00BFFF; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;">
-        🔈 Bienvenue !
-    </button>
+    st.title("Hacker Cosmic 1CA")
+    st.components.v1.html("""
+        <script>
+            function parler() {
+                var msg = new SpeechSynthesisUtterance("Bienvenue sur le site du Hacker Cosmic !");
+                msg.lang = 'fr-FR'; window.speechSynthesis.speak(msg);
+            }
+        </script>
+        <button onclick="parler()" style="background-color: #00BFFF; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+            🔈 Activer la voix
+        </button>
     """, height=60)
 
+# 4. Menu Sidebar
+with st.sidebar:
+    st.title("🚀 Menu")
+    menu = st.radio("Aller vers :", ["💰 Calculateur", "📐 Maths & Géo", "🎮 Défi Jeu", "💎 Gamer"])
+    st.write("---")
+    st.caption("Créé par le Hacker Cosmic 2026")
 
+# 5. Logique des pages
+if menu == "💰 Calculateur":
+    st.header("💰 Calculateur de Soldes")
+    c1, c2 = st.columns(2)
+    with c1:
+        prix_i = st.number_input("Prix (€)", min_value=0.0, value=100.0)
+    with c2:
+        remise_p = st.slider("Réduction (%)", 0, 100, 20)
+    
+    montant_r = (prix_i * remise_p) / 100
+    prix_f = prix_i - montant_r
+    st.metric("Prix Final", f"{prix_f} €", delta=f"-{montant_r} €", delta_color="inverse")
 
-# Saisie des valeurs
-col_gauche, col_droite = st.columns(2)
+elif menu == "📐 Maths & Géo":
+    st.header("📐 Espace Mathématiques")
+    forme = st.selectbox("Forme :", ["Rectangle", "Triangle", "Cercle"])
+    if forme == "Rectangle":
+        L = st.number_input("Longueur (L)", value=10.0); l = st.number_input("Largeur (l)", value=5.0)
+        st.write(f"**Formule :** $L \cdot l$")
+        st.success(f"Aire = {L * l}")
+    elif forme == "Triangle":
+        b = st.number_input("Base (b)", value=10.0); h = st.number_input("Hauteur (h)", value=5.0)
+        st.write(f"**Formule :** $(b \cdot h) / 2$")
+        st.success(f"Aire = {(b * h) / 2}")
 
-with col_gauche:
-    prix_initial = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0)
-
-with col_droite:
-    pourcentage = st.slider("Choisis ta réduction (%)", 0, 100, 10, key="valeur_remise")        
-
-
-
-
-
-
-# Calculs
-remise = (prix_initial * pourcentage) / 100
-prix_final = prix_initial - remise
-
-# Affichage
-st.divider()
-# Affichage stylé
-st.metric(
-    label="✅ Prix après réduction", 
-    value=f"{prix_final} €", 
-    delta=f"-{remise} €", 
-    delta_color="inverse"
-)
-if pourcentage >= 50:
-    st.warning("🔥 C'est une affaire de dingue !")
-elif pourcentage > 0:
-    st.success("💰 Super économie !")
-
-
-
-# --- SECTION JEU AMÉLIORÉE (Remplace les lignes 53 à 82) ---
-st.divider()
-st.subheader("🎮 Le Défi du Hacker Cosmic")
-
-if 'score' not in st.session_state:
-    st.session_state.score = 0
-if 'cible' not in st.session_state:
-    st.session_state.cible = 20.0
-
-col_jeu1, col_jeu2 = st.columns(2)
-
-with col_jeu1:
-    st.info(f"🏆 Score : {st.session_state.score}")
+elif menu == "🎮 Défi Jeu":
+    st.header("🎮 Le Défi du Hacker")
+    if 'score' not in st.session_state: st.session_state.score = 0
+    if 'cible' not in st.session_state: st.session_state.cible = 25.0
+    
+    st.info(f"🏆 Score : {st.session_state.score} | Cible : {st.session_state.cible} €")
     if st.button("🎲 Nouveau défi"):
         st.session_state.cible = float(random.randint(10, 80))
         st.session_state.gagne = False
+        st.rerun()
 
-with col_jeu2:
-    # Ce curseur ne sert que pour le jeu !
-    p_jeu = st.slider("Ajuste pour gagner !", 0, 100, 10, key="slider_jeu")
-    # On calcule le prix du jeu ici avec le nouveau curseur
-    prix_jeu = prix_initial * (1 - p_jeu / 100)
-    st.write(f"🎯 Cible : **{st.session_state.cible} €**")
-    st.write(f"💵 Ton test : **{round(prix_jeu, 2)} €**")
-
-# Vérification de la victoire
-if round(prix_jeu, 2) == st.session_state.cible:
-    if not st.session_state.get('gagne', False):
-        st.session_state.score += 1
-        st.session_state.gagne = True
+    p_jeu = st.slider("Ajuste la remise !", 0, 100, 10)
+    test_jeu = round(100 * (1 - p_jeu / 100), 2)
+    st.write(f"💵 Ton test (sur base 100€) : **{test_jeu} €**")
     
-    st.success("🏆 COMPTE EST BON !")
+    if test_jeu == st.session_state.cible:
+        if not st.session_state.get('gagne', False):
+            st.session_state.score += 1; st.session_state.gagne = True
+        st.balloons(); st.success("🏆 COMPTE EST BON !")
 
-st.divider()
-st.subheader("📟 Mini-Calculatrice Rapide")
-
-# On crée deux colonnes pour que ce soit joli
-col_c1, col_c2 = st.columns(2)
-
-with col_c1:
-    operation = st.text_input("Tape ton calcul (ex: 12*4)", value="10+10")
-
-with col_c2:
-    try:
-        # Cette fonction calcule le texte automatiquement !
-        resultat_mini = eval(operation)
-        st.metric("Résultat", resultat_mini)
-    except:
-        st.write("Format : 2*5")
-st.divider()
-st.subheader("🍴 Aide au Restaurant")
-
-c1, c2 = st.columns(2)
-with c1:
-    note = st.number_input("Montant total (€)", min_value=0.0, value=50.0)
-with c2:
-    amis = st.number_input("Nombre de personnes", min_value=1, value=2)
-
-pourcentage_tip = st.slider("Pourboire (%)", 0, 30, 10)
-total_avec_tip = note * (1 + pourcentage_tip/100)
-
-st.info(f"Chacun doit payer : **{total_avec_tip / amis:.2f} €**")
-st.divider()
-st.subheader("📐 Assistant de Géométrie")
-
-forme = st.selectbox("Choisis une forme", ["Rectangle", "Triangle", "Cercle"])
-
-if forme == "Rectangle":
-    l = st.number_input("Longueur ($L$)", min_value=0.0, value=10.0)
-    h = st.number_input("Largeur ($l$)", min_value=0.0, value=5.0)
-    aire = l * h
-    perimetre = 2 * (l + h)
-    st.write(f"**Formule de l'aire :** $L \\times l$")
-    st.success(f"Aire : **{aire}** | Périmètre : **{perimetre}**")
-
-elif forme == "Triangle":
-    b = st.number_input("Base ($b$)", min_value=0.0, value=10.0)
-    h = st.number_input("Hauteur ($h$)", min_value=0.0, value=5.0)
-    aire = (b * h) / 2
-    st.write(f"**Formule :** $(b \\times h) / 2$")
-    st.success(f"Aire du triangle : **{aire}**")
-
-elif forme == "Cercle":
-    r = st.number_input("Rayon ($r$)", min_value=0.0, value=5.0)
-    aire = 3.14159 * (r ** 2)
-    perimetre = 2 * 3.14159 * r
-    st.write(f"**Formule :** $\pi \\times r^2$")
-    st.success(f"Aire : **{aire:.2f}** | Périmètre : **{perimetre:.2f}**")
-
-
+elif menu == "💎 Gamer":
+    st.header("💎 Convertisseur Gamer")
+    euros = st.number_input("Montant (€)", value=10.0)
+    st.write(f"💎 **Robux :** {int(euros * 80)}")
+    st.write(f"🔥 **V-Bucks :** {int(euros * 110)}")
