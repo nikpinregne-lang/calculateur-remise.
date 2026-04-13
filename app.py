@@ -1,38 +1,53 @@
-
 import streamlit as st
 
-# 1. Configuration de la page (onglet du navigateur)
-st.set_page_config(page_title="Calculateur Hacker Cosmic", page_icon="💰")
+# 1. Configuration de la page et style CSS personnalisé
+st.set_page_config(page_title="Hacker Cosmic 1CA", layout="centered")
 
-# 2. En-tête : Logo et Titre
-col1, col2 = st.columns([1, 3]) # On crée deux colonnes pour aligner le logo et le titre
+st.markdown("""
+    <style>
+    /* Fond sombre et police 'Hacker' */
+    .stApp {
+        background-color: #0e1117;
+        color: #00ff41;
+    }
+    /* Style des titres */
+    h1, h2, h3 {
+        color: #00ff41 !important;
+        font-family: 'Courier New', Courier, monospace;
+        text-shadow: 2px 2px #000000;
+    }
+    /* Style du prix final */
+    .price-text {
+        font-size: 50px !important;
+        font-weight: bold;
+        color: #00ff41;
+        text-align: center;
+        border: 2px solid #00ff41;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px #00ff41;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-with col1:
-    st.image("IMG_0956.png", width=150) # Ton logo de Hacker
-
-with col2:
-    st.title("Mon calculateur de réduction Hacker Cosmic 1CA")
-    st.write("Créé par **RÈGNE**")
-
-st.write("---") # Une ligne de séparation
-
-# 3. Les entrées de chiffres
-prix_initial = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0, step=1.0)
-pourcentage = st.number_input("Réduction (%)", min_value=0.0, max_value=100.0, value=10.0, step=1.0)
-
-# 4. Les calculs magiques
-montant_remise = (prix_initial * pourcentage) / 100
-prix_final = prix_initial - montant_remise
-
+# 2. Organisation en colonnes pour les entrées
+st.title("🌌 Hacker Cosmic 1CA")
 st.write("---")
 
-# 5. Affichage du résultat (Le plus important pour les parents)
-st.subheader("Prix après réduction")
-st.metric(label="", value=f"{prix_final} €", delta=f"-{montant_remise} €", delta_color="inverse")
+col1, col2 = st.columns(2)
 
-# 6. Le détail pour le prof de math (et pour bien comprendre)
-with st.expander("👁️ Voir le détail du calcul"):
-    st.info(f"Raisonnement : {prix_initial} € - ({prix_initial} € . {pourcentage}/100) = {prix_final} €")
+with col1:
+    prix_origine = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0, step=1.0)
 
-# 7. Signature en bas
-st.caption("🚀 Hacker Cosmic 1CA 2026 | Mode Haute Lisibilité")
+with col2:
+    reduction = st.number_input("Réduction (%)", min_value=0.0, max_value=100.0, value=10.0, step=1.0)
+
+# 3. Calcul et affichage stylisé
+prix_final = prix_origine * (1 - reduction / 100)
+
+st.write("### Prix après réduction")
+st.markdown(f'<p class="price-text">{prix_final:.2f} €</p>', unsafe_allow_html=True)
+
+# 4. Message de succès "Hacker"
+st.success(f"Économie réalisée : {prix_origine - prix_final:.2f} €")
+
