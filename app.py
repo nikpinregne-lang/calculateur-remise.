@@ -26,8 +26,8 @@ with st.sidebar:
 
 # --- CORPS PRINCIPAL : CALCULATEUR ---
 
-# Remplace l'URL ci-dessous par le lien direct de ton logo si tu l'as hébergé
-st.image("https://githubusercontent.com", width=100) 
+# REMPLACEMENT DU LOGO : On utilise le fichier image.png de votre GitHub
+st.image("image.png", width=150) 
 
 st.title("Mon calculateur de réduction Hacker Cosmic 1CA 2026")
 st.write("Créé par **RÈGNE**")
@@ -45,27 +45,27 @@ st.write("---")
 # --- SECTION : EXERCICE INFINI ---
 st.header("📝 Exercice infini")
 
-# Logique pour générer un nouvel exercice si nécessaire
 if 'exo_prix' not in st.session_state:
     st.session_state.exo_prix = random.randint(10, 500)
-    st.session_state.exo_remise = random.choice([5, 10, 20, 25, 50])
+    st.session_state.exo_remise = random.randint(5, 75)
     st.session_state.reponse_correcte = st.session_state.exo_prix * (1 - st.session_state.exo_remise / 100)
 
 st.write(f"**Énoncé :** Un produit coûte **{st.session_state.exo_prix} €**.")
 st.write(f"On applique une remise de **{st.session_state.exo_remise} %**.")
 
-user_ans = st.number_input("Quel est le prix final après réduction ?", key="user_ans", value=0.0)
+user_ans = st.number_input("Quel est le prix final ?", key="user_ans", value=0.0)
 
 col_check, col_new = st.columns(2)
 
 with col_check:
     if st.button("Vérifier"):
-        if abs(user_ans - st.session_state.reponse_correcte) < 0.01:
-            st.success(f"✅ Bravo ! C'est exactement {st.session_state.reponse_correcte:.2f} €")
+        if abs(user_ans - st.session_state.reponse_correcte) < 0.05:
+            st.success(f"✅ Bravo ! C'est bien {st.session_state.reponse_correcte:.2f} €")
         else:
-            st.error("❌ Faux, réessaye encore !")
+            st.error("❌ Faux, réessaye !")
 
 with col_new:
     if st.button("Nouvel exercice 🔄"):
-        del st.session_state.exo_prix
+        # Supprimer les anciennes valeurs pour forcer la regénération
+        del st.session_state['exo_prix']
         st.rerun()
