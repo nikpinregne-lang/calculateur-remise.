@@ -2,75 +2,76 @@
 import streamlit as st
 import random
 
-# 1. Configuration de la page
-st.set_page_config(page_title="Hacker Cosmic 1CA 2026", layout="centered")
+# 1. Configuration
+st.set_page_config(page_title="Hacker Cosmic 1CA 2026", layout="wide")
 
-# --- BARRE LATÉRALE : CHATBOT ---
+# --- DICTIONNAIRE MULTILINGUE ---
+languages = {
+    "Français": {"title": "Calculateur", "price": "Prix d'origine", "promo": "Réduction", "check": "Vérifier", "new": "Nouveau", "author": "Créé par IEEM"},
+    "English": {"title": "Calculator", "price": "Original Price", "promo": "Discount", "check": "Check", "new": "New", "author": "Created by IEEM"},
+    "Español": {"title": "Calculadora", "price": "Precio original", "promo": "Descuento", "check": "Verificar", "new": "Nuevo", "author": "Creado por IEEM"},
+    "Deutsch": {"title": "Rechner", "price": "Originalpreis", "promo": "Rabatt", "check": "Prüfen", "new": "Neu", "author": "Erstellt von IEEM"},
+    "Italiano": {"title": "Calcolatrice", "price": "Prezzo originale", "promo": "Sconto", "check": "Verifica", "new": "Nuovo", "author": "Creato da IEEM"},
+    "Português": {"title": "Calculadora", "price": "Preço original", "promo": "Desconto", "check": "Verificar", "new": "Novo", "author": "Criado por IEEM"},
+    "العربية": {"title": "حاسبة", "price": "السعر الأصلي", "promo": "خصم", "check": "تحقق", "new": "جديد", "author": "تم إنشاؤه بواسطة IEEM"}
+}
+
+# --- BARRE LATÉRALE GAUCHE : CHATBOT ---
 with st.sidebar:
     st.title("🤖 Chatbot 1CA")
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
-
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
+    if "messages" not in st.session_state: st.session_state.messages = []
+    for m in st.session_state.messages:
+        with st.chat_message(m["role"]): st.markdown(m["content"])
+    
     if prompt := st.chat_input("Pose-moi une question..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
-        
-        reponse = f"Salut, c'est l'IA Hacker Cosmic. Tu as dit : '{prompt}'. Je suis là pour t'aider avec IEEM !"
-        with st.chat_message("assistant"):
-            st.markdown(reponse)
-        st.session_state.messages.append({"role": "assistant", "content": reponse})
+        with st.chat_message("user"): st.markdown(prompt)
+        resp = f"Assistant IEEM: {prompt}"
+        with st.chat_message("assistant"): st.markdown(resp)
+        st.session_state.messages.append({"role": "assistant", "content": resp})
 
-# --- CORPS PRINCIPAL : CALCULATEUR ---
+# --- CORPS PRINCIPAL ---
+# On crée deux colonnes : une large pour le contenu, une petite à droite pour la langue
+col_main, col_lang = st.columns([0.8, 0.2])
 
-# Utilisation du fichier exact vu sur ta capture d'écran
-try:
-    st.image("IMG_0956.png", width=250)
-except:
-    st.error("⚠️ Fichier 'IMG_0956.png' introuvable. Vérifie qu'il est bien à côté de ton fichier app.py sur GitHub.")
+with col_lang:
+    selected_lang = st.selectbox("🌐 Language", list(languages.keys()))
+    T = languages[selected_lang]
 
-st.title("Mon calculateur de réduction Hacker Cosmic 1CA 2026")
-st.write("Créé par **IEEM**")
-st.write("---")
+with col_main:
+    try:
+        st.image("IMG_0956.png", width=200)
+    except:
+        st.info("Logo IMG_0956.png")
 
-prix_origine = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0, step=0.01)
-reduction = st.number_input("Réduction (%)", min_value=0.0, max_value=100.0, value=10.0, step=0.1)
+    st.title(f"{T['title']} Hacker Cosmic 1CA 2026")
+    st.write(T["author"])
+    st.write("---")
 
-st.header("Prix après réduction")
-prix_final = prix_origine * (1 - reduction / 100)
-st.subheader(f"{prix_final:.2f} €")
+    prix_origine = st.number_input(f"{T['price']} (€)", min_value=0.0, value=100.0)
+    reduction = st.number_input(f"{T['promo']} (%)", min_value=0.0, max_value=100.0, value=10.0)
 
-st.write("---")
+    st.header("Total")
+    st.subheader(f"{prix_origine * (1 - reduction / 100):.2f} €")
 
-# --- SECTION : EXERCICE INFINI ---
-st.header("📝 Exercice infini")
+    st.write("---")
 
-# Initialisation d'un exercice si vide
-if 'exo_prix' not in st.session_state:
-    st.session_state.exo_prix = random.randint(10, 500)
-    st.session_state.exo_remise = random.randint(5, 75)
-    st.session_state.reponse_correcte = st.session_state.exo_prix * (1 - st.session_state.exo_remise / 100)
+    # --- EXERCICE INFINI ---
+    st.header("📝 Exercice")
+    if 'exo_prix' not in st.session_state:
+        st.session_state.exo_prix = random.randint(10, 500)
+        st.session_state.exo_remise = random.randint(5, 75)
+        st.session_state.sol = st.session_state.exo_prix * (1 - st.session_state.exo_remise / 100)
 
-st.write(f"**Énoncé :** Un produit coûte **{st.session_state.exo_prix} €**.")
-st.write(f"On applique une remise de **{st.session_state.exo_remise} %**.")
+    st.write(f"Prix: **{st.session_state.exo_prix} €** | Remise: **{st.session_state.exo_remise} %**")
+    user_ans = st.number_input("Réponse :", key="ans")
 
-user_ans = st.number_input("Quel est le prix final ?", key="user_ans", value=0.0)
-
-col_check, col_new = st.columns(2)
-
-with col_check:
-    if st.button("Vérifier"):
-        if abs(user_ans - st.session_state.reponse_correcte) < 0.05:
-            st.success(f"✅ Bravo ! C'est bien {st.session_state.reponse_correcte:.2f} €")
-        else:
-            st.error("❌ Faux, réessaye !")
-
-with col_new:
-    if st.button("Nouvel exercice 🔄"):
-        if 'exo_prix' in st.session_state:
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button(T["check"]):
+            if abs(user_ans - st.session_state.sol) < 0.05: st.success("✅")
+            else: st.error("❌")
+    with c2:
+        if st.button(T["new"]):
             del st.session_state['exo_prix']
-        st.rerun()
+            st.rerun()
