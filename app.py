@@ -1,39 +1,46 @@
 import streamlit as st
 import random
 
-# 1. Configuration
+# 1. Configuration de la page
 st.set_page_config(page_title="Hacker Cosmic 1CA 2026", layout="wide")
 
-# --- DICTIONNAIRE MULTILINGUE ---
+# --- LANGUES (Menu à droite) ---
 languages = {
-    "Français": {"title": "Calculateur", "price": "Prix d'origine", "promo": "Réduction", "check": "Vérifier", "new": "Nouveau", "author": "Créé par IEEM", "bot_hi": "Bonjour ! Je suis l'assistant de IEEM. Comment puis-je t'aider avec les mathématiques ?"},
-    "English": {"title": "Calculator", "price": "Original Price", "promo": "Discount", "check": "Check", "new": "New", "author": "Created by IEEM", "bot_hi": "Hello! I am IEEM's assistant. How can I help you with math?"},
-    "Español": {"title": "Calculadora", "price": "Precio original", "promo": "Descuento", "check": "Verificar", "new": "Nuevo", "author": "Creado por IEEM", "bot_hi": "¡Hola! Soy el asistente de IEEM. ¿Cómo puedo ayudarte con les matemáticas?"}
+    "Français": {"title": "Calculateur Hacker Cosmic", "author": "Créé par Règne", "price": "Prix d'origine (€)", "promo": "Réduction (%)", "check": "Vérifier", "new": "Nouvel exercice 🔄"},
+    "English": {"title": "Hacker Cosmic Calculator", "author": "Created by Règne", "price": "Original Price (€)", "promo": "Discount (%)", "check": "Check", "new": "New Exercise 🔄"},
+    "Español": {"title": "Calculadora Hacker Cosmic", "author": "Creado por Règne", "price": "Precio original (€)", "promo": "Descuento (%)", "check": "Verificar", "new": "Nuevo ejercicio 🔄"}
 }
 
-# --- BARRE LATÉRALE GAUCHE : CHATBOT INTELLIGENT ---
+# --- BARRE LATÉRALE : CHATBOT INTELLIGENT ---
 with st.sidebar:
     st.title("🤖 Chatbot 1CA")
-    if "messages" not in st.session_state: 
-        st.session_state.messages = [{"role": "assistant", "content": "Salut ! Je suis l'IA de IEEM. Pose-moi une question sur le site ou les remises !"}]
+    st.write("Assistant officiel de **Règne**")
     
+    if "messages" not in st.session_state:
+        st.session_state.messages = [{"role": "assistant", "content": "Salut ! Je suis l'IA créée par **Règne**. Pose-moi n'importe quelle question, je répondrai à tout !"}]
+
     for m in st.session_state.messages:
         with st.chat_message(m["role"]): st.markdown(m["content"])
-    
-    if prompt := st.chat_input("Pose-moi une question..."):
+
+    if prompt := st.chat_input("Dis-moi n'importe quoi..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"): st.markdown(prompt)
         
-        # LOGIQUE DE RÉPONSE (On ne recopie plus, on répond !)
+        # LOGIQUE DE RÉPONSE ÉTENDUE
         p = prompt.lower()
         if "qui" in p and "cree" in p:
-            reponse = "Ce site a été créé par le génie **IEEM** en 2026 ! 😎"
-        elif "comment" in p and "calcul" in p:
-            reponse = "C'est simple ! Tu prends le prix, tu le multiplies par la remise, et tu divises par 100. Puis tu soustrais ça au prix de départ."
-        elif "ca va" in p:
-            reponse = "Je vais super bien, je suis en pleine forme numérique ! Et toi ?"
+            reponse = "Ce site exceptionnel a été entièrement conçu et créé par **Règne** en 2026 ! 👑"
+        elif "ca va" in p or "ça va" in p:
+            reponse = "Je vais super bien ! Je suis boosté par l'énergie cosmique de **Règne**. Et toi ?"
+        elif "aide" in p or "comment" in p or "calcul" in p:
+            reponse = "C'est facile : Prends ton prix, multiplie par la remise, divise par 100. Soustrais ça du prix de base. Besoin d'un exemple ?"
+        elif "2026" in p:
+            reponse = "2026 est l'année de la révolution Hacker Cosmic lancée par **Règne** !"
+        elif "merci" in p:
+            reponse = "Tout le plaisir est pour moi ! **Règne** m'a appris à être poli et efficace."
         else:
-            reponse = "C'est très intéressant ! Je suis encore en train d'apprendre, mais IEEM m'a configuré pour t'aider au mieux."
+            # Réponse générique intelligente pour "répondre à tout"
+            reponse = f"C'est une excellente remarque ! En tant qu'IA de **Règne**, je trouve que '{prompt}' est un sujet passionnant. Tu veux que j'approfondisse ou qu'on fasse des maths ?"
 
         with st.chat_message("assistant"): st.markdown(reponse)
         st.session_state.messages.append({"role": "assistant", "content": reponse})
@@ -46,39 +53,46 @@ with col_lang:
     T = languages[selected_lang]
 
 with col_main:
+    # Ton logo
     try:
         st.image("IMG_0956.png", width=200)
     except:
         st.info("Logo Hacker Cosmic")
 
-    st.title(f"{T['title']} Hacker Cosmic 1CA 2026")
-    st.write(T["author"])
+    st.title(f"{T['title']} 1CA 2026")
+    st.markdown(f"### {T['author']}")
     st.write("---")
 
     # Calculateur
-    prix_origine = st.number_input(f"{T['price']} (€)", min_value=0.0, value=100.0)
-    reduction = st.number_input(f"{T['promo']} (%)", min_value=0.0, max_value=100.0, value=10.0)
-    st.subheader(f"Total: {prix_origine * (1 - reduction / 100):.2f} €")
+    c1, c2 = st.columns(2)
+    with c1:
+        prix_origine = st.number_input(T["price"], min_value=0.0, value=100.0)
+    with c2:
+        reduction = st.number_input(T["promo"], min_value=0.0, max_value=100.0, value=10.0)
+    
+    prix_final = prix_origine * (1 - reduction / 100)
+    st.header(f"Total : {prix_final:.2f} €")
 
     st.write("---")
 
-    # Exercice
-    st.header(T["exo_title"] if "exo_title" in T else "📝 Exercice")
+    # Exercice Infini
+    st.header(T["new"].split(' ')[0] + " " + "Exercice")
     if 'exo_prix' not in st.session_state:
         st.session_state.exo_prix = random.randint(10, 500)
         st.session_state.exo_remise = random.randint(5, 75)
         st.session_state.sol = st.session_state.exo_prix * (1 - st.session_state.exo_remise / 100)
 
-    st.write(f"Prix: **{st.session_state.exo_prix} €** | Remise: **{st.session_state.exo_remise} %**")
-    user_ans = st.number_input("Ta réponse :", key="ans")
+    st.write(f"**Défi :** Un article coûte **{st.session_state.exo_prix} €** avec **{st.session_state.exo_remise} %** de remise.")
+    user_ans = st.number_input("Ta réponse (€) :", key="ans_input")
 
-    c1, c2 = st.columns(2)
-    with c1:
+    bx1, bx2 = st.columns(2)
+    with bx1:
         if st.button(T["check"]):
-            if abs(user_ans - st.session_state.sol) < 0.05: st.success("✅ Bravo !")
-            else: st.error("❌ Essaye encore !")
-    with c2:
+            if abs(user_ans - st.session_state.sol) < 0.05:
+                st.success("✅ Incroyable ! Tu as l'esprit d'un Hacker Cosmic.")
+            else:
+                st.error(f"❌ Pas tout à fait... la réponse était {st.session_state.sol:.2f} €")
+    with bx2:
         if st.button(T["new"]):
             del st.session_state['exo_prix']
             st.rerun()
-
