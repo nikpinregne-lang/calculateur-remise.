@@ -55,6 +55,40 @@ if menu == "📐 Maths & Géo":
 elif menu == "💰 Calculateur":
     st.header("💰 Calculateur de Soldes")
     # Remets ici ton code de prix_initial et pourcentage (avec décalage à droite !)
+    col_gauche, col_droite = st.columns(2)
+    with col_gauche:
+        prix_initial = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0)
+    with col_droite:
+        pourcentage = st.slider("Réduction (%)", 0, 100, 20)
+    if 'score' not in st.session_state:
+        st.session_state.score = 0
+    if 'cible' not in st.session_state:
+        st.session_state.cible = 20.0
+
+    col_j1, col_j2 = st.columns(2)
+    with col_j1:
+        st.info(f"🏆 Score : {st.session_state.score}")
+        if st.button("🎲 Nouveau défi"):
+            import random
+            st.session_state.cible = float(random.randint(10, 80))
+            st.session_state.gagne = False
+
+    with col_j2:
+        p_jeu = st.slider("Ajuste la réduction !", 0, 100, 10, key="slider_jeu")
+        prix_jeu = 100 * (1 - p_jeu / 100) # On utilise 100€ comme base
+        st.write(f"🎯 Cible : **{st.session_state.cible} €**")
+        st.write(f"💵 Ton test : **{round(prix_jeu, 2)} €**")
+
+    if round(prix_jeu, 2) == st.session_state.cible:
+        if not st.session_state.get('gagne', False):
+            st.session_state.score += 1
+            st.session_state.gagne = True
+        st.balloons()
+        st.success("🏆 COMPTE EST BON ! +1 point")
+
+    remise = (prix_initial * pourcentage) / 100
+    prix_final = prix_initial - remise
+    st.metric(label="✅ Prix après réduction", value=f"{prix_final} €", delta=f"-{remise} €", delta_color="inverse")
 
 # --- 4. SECTION JEU ---
 elif menu == "🎮 Défi Jeu":
