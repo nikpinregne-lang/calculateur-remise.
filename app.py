@@ -1,3 +1,4 @@
+
 import streamlit as st
 import random
 
@@ -26,11 +27,11 @@ with st.sidebar:
 
 # --- CORPS PRINCIPAL : CALCULATEUR ---
 
-# REMPLACEMENT ICI : J'ai mis IMG_0820.png car c'est ce qu'on voit sur votre GitHub
+# Utilisation du fichier exact vu sur ta capture d'écran
 try:
-    st.image("IMG_0820.png", width=150)
+    st.image("IMG_0956.png", width=250)
 except:
-    st.info("💡 Image introuvable. Vérifiez le nom du fichier sur GitHub.")
+    st.error("⚠️ Fichier 'IMG_0956.png' introuvable. Vérifie qu'il est bien à côté de ton fichier app.py sur GitHub.")
 
 st.title("Mon calculateur de réduction Hacker Cosmic 1CA 2026")
 st.write("Créé par **IEEM**")
@@ -48,6 +49,7 @@ st.write("---")
 # --- SECTION : EXERCICE INFINI ---
 st.header("📝 Exercice infini")
 
+# Initialisation d'un exercice si vide
 if 'exo_prix' not in st.session_state:
     st.session_state.exo_prix = random.randint(10, 500)
     st.session_state.exo_remise = random.randint(5, 75)
