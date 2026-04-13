@@ -1,34 +1,29 @@
-
 import streamlit as st
 import random
 import re
 
-# 1. Configuration
+# 1. Configuration de la page
 st.set_page_config(page_title="Hacker Cosmic 1CA 2026", layout="wide")
 
-# --- DICTIONNAIRE COMPLET DES LANGUES ---
+# --- DICTIONNAIRE COMPLET DES LANGUES OFFICIELLES ---
+# Cette liste couvre les langues officielles de plus de 150 pays
 languages = {
-    "🇫🇷 Français": {"t": "Calculateur Hacker Cosmic 1CA", "p": "Prix d'origine", "r": "Réduction", "check": "Vérifier", "new": "Nouveau 🔄", "author": "Créé par Règne"},
-    "🇸🇦 Arabie Saoudite": {"t": "حاسبة هكر كوزميك 1CA", "p": "السعر الأصلي", "r": "خصم", "check": "تحقق", "new": "جديد 🔄", "author": "تم إنشاؤه بواسطة Règne"},
-    "🇲🇦 Maroc": {"t": "حاسبة هكر كوزميك 1CA", "p": "السعر الأصلي", "r": "خصم", "check": "تحقق", "new": "جديد 🔄", "author": "تم إنشاؤه بواسطة Règne"},
-    "🇷🇴 Română": {"t": "Calculator Hacker Cosmic 1CA", "p": "Preț original", "r": "Reducere", "check": "Verifică", "new": "Nou 🔄", "author": "Creat de Règne"},
-    "🇺🇦 Українська": {"t": "Калькулятор Hacker Cosmic 1CA", "p": "Початкова ціна", "r": "Знижка", "check": "Перевірити", "new": "Новий 🔄", "author": "Створено Règne"},
-    "🇺🇸 English": {"t": "Hacker Cosmic Calculator 1CA", "p": "Original Price", "r": "Discount", "check": "Check", "new": "New 🔄", "author": "Created by Règne"},
-    "🇪🇸 Español": {"t": "Calculadora Hacker Cosmic 1CA", "p": "Precio original", "r": "Descuento", "check": "Verificar", "new": "Nuevo 🔄", "author": "Creado por Règne"}
+    "🇫🇷 Français": {"t": "Mon calculateur de réduction", "st": "Hacker Cosmic 1CA 2026", "p": "Prix d'origine", "r": "Réduction", "check": "Vérifier", "new": "Nouveau 🔄", "author": "Créé par Règne"},
+    "🇲🇦 Maroc (العربية)": {"t": "آلة حاسبة الخصم الخاصة بي", "st": "Hacker Cosmic 1CA 2026", "p": "السعر الأصلي", "r": "خصم", "check": "تحقق", "new": "جديد 🔄", "author": "تم إنشاؤه بواسطة Règne"},
+    "🇸🇦 Arabie Saoudite": {"t": "آلة حاسبة الخصم الخاصة بي", "st": "Hacker Cosmic 1CA 2026", "p": "السعر الأصلي", "r": "خصم", "check": "تحقق", "new": "جديد 🔄", "author": "تم إنشاؤه بواسطة Règne"},
+    "🇩🇿 Algérie (العربية)": {"t": "آلة حاسبة الخصم الخاصة بي", "st": "Hacker Cosmic 1CA 2026", "p": "السعر الأصلي", "r": "خصم", "check": "تحقق", "new": "جديد 🔄", "author": "تم إنشاؤه بواسطة Règne"},
+    "🇷🇴 Română": {"t": "Calculatorul meu de reduceri", "st": "Hacker Cosmic 1CA 2026", "p": "Preț original", "r": "Reducere", "check": "Verifică", "new": "Nou 🔄", "author": "Creat de Règne"},
+    "🇺🇦 Українська": {"t": "Мій калькулятор знижок", "st": "Hacker Cosmic 1CA 2026", "p": "Початкова ціна", "r": "Знижка", "check": "Перевірити", "new": "Новий 🔄", "author": "Створено Règne"},
+    "🇺🇸 English": {"t": "My discount calculator", "st": "Hacker Cosmic 1CA 2026", "p": "Original Price", "r": "Discount", "check": "Check", "new": "New 🔄", "author": "Created by Règne"},
+    "🇪🇸 Español": {"t": "Mi calculadora de descuentos", "st": "Hacker Cosmic 1CA 2026", "p": "Precio original", "r": "Descuento", "check": "Verificar", "new": "Nuevo 🔄", "author": "Creado por Règne"},
+    "🇵🇹 Português": {"t": "Minha calculadora de descontos", "st": "Hacker Cosmic 1CA 2026", "p": "Preço original", "r": "Desconto", "check": "Verificar", "new": "Novo 🔄", "author": "Criado por Règne"},
+    "🇮🇹 Italiano": {"t": "Il mio calcolatore de sconti", "st": "Hacker Cosmic 1CA 2026", "p": "Prezzo originale", "r": "Sconto", "check": "Verifica", "new": "Nuovo 🔄", "author": "Creato da Règne"},
+    "🇩🇪 Deutsch": {"t": "Mein Rabattrechner", "st": "Hacker Cosmic 1CA 2026", "p": "Originalpreis", "r": "Rabatt", "check": "Prüfen", "new": "Neu 🔄", "author": "Erstellt von Règne"},
+    "🇯🇵 日本語": {"t": "私の割引計算機", "st": "Hacker Cosmic 1CA 2026", "p": "元の価格", "r": "割引", "check": "チェック", "new": "新 🔄", "author": "Règne によって作成されました"},
+    "🇨🇳 中文": {"t": "我的折扣计算器", "st": "Hacker Cosmic 1CA 2026", "p": "原价", "r": "折扣", "check": "检查", "new": "新 🔄", "author": "由 Règne 创建"}
 }
 
-# --- FONCTION VOIX AUTOMATIQUE ---
-def parler_auto(texte):
-    st.components.v1.html(f"""
-        <script>
-        var msg = new SpeechSynthesisUtterance("{texte}");
-        msg.lang = 'fr-FR';
-        msg.volume = 1;
-        window.speechSynthesis.speak(msg);
-        </script>
-    """, height=0)
-
-# --- CERVEAU DU CHATBOT ---
+# --- CERVEAU DU CHATBOT (RÉPOND À TOUT) ---
 def cerveau_ia(question):
     q = question.lower().strip()
     if re.search(r'\d+', q) and any(op in q for op in ['+', '-', '*', '/']):
@@ -37,9 +32,11 @@ def cerveau_ia(question):
             return f"Après analyse, **{calcul} est égal à {eval(calcul)}**. Pas mal, non ? 😎"
         except: pass
     if any(word in q for word in ["salut", "bonjour", "hello"]):
-        return "Salut ! Comment vas-tu aujourd'hui ? 😊"
+        return "Salut ! Je suis ton IA illimitée. Pose-moi n'importe quelle question ! 😊"
     elif "ça va" in q or "sava" in q:
         return "Je vais super bien ! Je suis en pleine forme numérique grâce à **Règne**. Et toi ?"
+    elif "qui" in q and "tes" in q:
+        return "Je suis l'assistant intelligent de **Règne**, le GOAT du projet 1CA !"
     return f"Ta question sur '{question}' est très pertinente. En tant qu'IA de **Règne**, je dirais que c'est un sujet qui mérite réflexion."
 
 # --- INTERFACE ---
@@ -57,7 +54,6 @@ with st.sidebar:
     
     if "messages" not in st.session_state:
         st.session_state.messages = [{"role": "assistant", "content": accueil}]
-        parler_auto(accueil) # Parle tout seul au début
     
     for m in st.session_state.messages:
         with st.chat_message(m["role"]):
@@ -68,13 +64,15 @@ with st.sidebar:
         with st.chat_message("user"): st.markdown(prompt)
         rep = cerveau_ia(prompt)
         st.session_state.messages.append({"role": "assistant", "content": rep})
-        parler_auto(rep) # Parle tout seul à chaque réponse
         st.rerun()
 
 with col_main:
     try: st.image("IMG_0956.png", width=130)
     except: st.info("Logo Hacker Cosmic")
-    st.title(T["t"] + " 2026")
+    
+    # Titres demandés par Règne
+    st.title(T["t"])
+    st.subheader(T["st"])
     st.write(f"### {T['author']}")
     st.write("---")
     
