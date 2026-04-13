@@ -19,18 +19,21 @@ with st.sidebar:
         with st.chat_message("user"):
             st.markdown(prompt)
         
-        reponse = f"Je suis l'IA Hacker Cosmic. Tu as dit : '{prompt}'. Comment se passent tes calculs en 2026 ?"
+        reponse = f"Salut, c'est l'IA Hacker Cosmic. Tu as dit : '{prompt}'. Je suis là pour t'aider avec IEEM !"
         with st.chat_message("assistant"):
             st.markdown(reponse)
         st.session_state.messages.append({"role": "assistant", "content": reponse})
 
 # --- CORPS PRINCIPAL : CALCULATEUR ---
 
-# REMPLACEMENT DU LOGO : On utilise le fichier image.png de votre GitHub
-st.image("image.png", width=150) 
+# REMPLACEMENT ICI : J'ai mis IMG_0820.png car c'est ce qu'on voit sur votre GitHub
+try:
+    st.image("IMG_0820.png", width=150)
+except:
+    st.info("💡 Image introuvable. Vérifiez le nom du fichier sur GitHub.")
 
 st.title("Mon calculateur de réduction Hacker Cosmic 1CA 2026")
-st.write("Créé par **RÈGNE**")
+st.write("Créé par **IEEM**")
 st.write("---")
 
 prix_origine = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0, step=0.01)
@@ -66,6 +69,6 @@ with col_check:
 
 with col_new:
     if st.button("Nouvel exercice 🔄"):
-        # Supprimer les anciennes valeurs pour forcer la regénération
-        del st.session_state['exo_prix']
+        if 'exo_prix' in st.session_state:
+            del st.session_state['exo_prix']
         st.rerun()
