@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 # 1. Configuration de la page (onglet du navigateur)
