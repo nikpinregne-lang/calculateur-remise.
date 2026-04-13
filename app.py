@@ -5,36 +5,38 @@ import re
 # 1. Configuration de la page
 st.set_page_config(page_title="Hacker Cosmic 1CA 2026", layout="wide")
 
-# --- STYLE CSS (TEXTES ADAPTATIFS ET LOGO BIEN PLACÉ) ---
+# --- STYLE CSS (TEXTES ADAPTATIFS ET ESPACEMENT) ---
 st.markdown("""
     <style>
-    .responsive-title { font-size: clamp(20px, 4vw, 36px); font-weight: bold; line-height: 1.1; margin-bottom: 5px; }
-    .responsive-subtitle { font-size: clamp(14px, 2.5vw, 20px); color: #666; margin-bottom: 10px; }
-    .block-container { padding-top: 2rem; }
+    .responsive-title { font-size: clamp(18px, 4vw, 34px); font-weight: bold; line-height: 1.1; margin-bottom: 5px; }
+    .responsive-subtitle { font-size: clamp(14px, 2.5vw, 18px); color: #666; margin-bottom: 5px; }
+    .block-container { padding-top: 1.5rem; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- DICTIONNAIRE MONDIAL COMPLET (TOUTES LES LANGUES NATIONALES) ---
+# --- DICTIONNAIRE MONDIAL (TOUTES LES LANGUES NATIONALES OFFICIELLES) ---
 languages = {
     "🇫🇷 France / Monde": {"t": "Mon calculateur de réduction", "st": "Hacker Cosmic 1CA 2026", "p": "Prix d'origine", "r": "Réduction", "check": "Vérifier", "new": "Nouveau Défi 🔄", "author": "Créé par Règne"},
-    "🇲🇦 Maroc / 🇩🇿 Algérie": {"t": "آلة حاسبة الخصم", "st": "Hacker Cosmic 1CA 2026", "p": "السعر الأصلي", "r": "خصم", "check": "تحقق", "new": "تحدي جديد 🔄", "author": "تم إنشاؤه بواسطة Règne"},
-    "🇸🇦 Arabie Saoudite": {"t": "آلة حاسبة الخصم", "st": "Hacker Cosmic 1CA 2026", "p": "السعر الأصلي", "r": "خصم", "check": "تحقق", "new": "تحدي جديد 🔄", "author": "تم إنشاؤه بواسطة Règne"},
-    "🇷🇴 România / 🇲🇩": {"t": "Calculator de reduceri", "st": "Hacker Cosmic 1CA 2026", "p": "Preț original", "r": "Reducere", "check": "Verifică", "new": "Nou 🔄", "author": "Creat de Règne"},
-    "🇺🇦 Україна": {"t": "Калькулятор знижок", "st": "Hacker Cosmic 1CA 2026", "p": "Початкова ціна", "r": "Знижка", "check": "Перевірити", "new": "Новий 🔄", "author": "Створено Règne"},
+    "🇲🇦 Maroc / 🇩🇿 Algérie / 🇹🇳": {"t": "آلة حاسبة الخصم", "st": "Hacker Cosmic 1CA 2026", "p": "السعر الأصلي", "r": "خصم", "check": "تحقق", "new": "تحدي جديد 🔄", "author": "تم إنشاؤه بواسطة Règne"},
+    "🇸🇦 Arabie Saoudite / 🇶🇦 / 🇦🇪": {"t": "آلة حاسبة الخصم", "st": "Hacker Cosmic 1CA 2026", "p": "السعر الأصلي", "r": "خصم", "check": "تحقق", "new": "تحدي جديد 🔄", "author": "تم إنشاؤه بواسطة Règne"},
     "🇺🇸 USA / UK / World": {"t": "My discount calculator", "st": "Hacker Cosmic 1CA 2026", "p": "Original Price", "r": "Discount", "check": "Check", "new": "New Challenge 🔄", "author": "Created by Règne"},
+    "🇷🇴 România / 🇲🇩 Moldova": {"t": "Calculator de reduceri", "st": "Hacker Cosmic 1CA 2026", "p": "Preț original", "r": "Reducere", "check": "Verifică", "new": "Nou 🔄", "author": "Creat de Règne"},
+    "🇺🇦 Україна (Ukraine)": {"t": "Калькулятор знижок", "st": "Hacker Cosmic 1CA 2026", "p": "Початкова ціна", "r": "Знижка", "check": "Перевірити", "new": "Новий 🔄", "author": "Створено Règne"},
     "🇪🇸 España / Latam": {"t": "Calculadora de descuentos", "st": "Hacker Cosmic 1CA 2026", "p": "Precio original", "r": "Descuento", "check": "Verificar", "new": "Nuevo 🔄", "author": "Creado por Règne"},
-    "🇵🇹 Portugal / 🇧🇷": {"t": "Calculadora de descontos", "st": "Hacker Cosmic 1CA 2026", "p": "Preço original", "r": "Desconto", "check": "Verificar", "new": "Novo 🔄", "author": "Criado por Règne"},
+    "🇵🇹 Portugal / 🇧🇷 Brasil": {"t": "Calculadora de descontos", "st": "Hacker Cosmic 1CA 2026", "p": "Preço original", "r": "Desconto", "check": "Verificar", "new": "Novo 🔄", "author": "Criado por Règne"},
     "🇮🇹 Italia": {"t": "Calcolatore sconti", "st": "Hacker Cosmic 1CA 2026", "p": "Prezzo originale", "r": "Sconto", "check": "Verifica", "new": "Nuovo 🔄", "author": "Creato da Règne"},
-    "🇩🇪 Deutschland": {"t": "Rabattrechner", "st": "Hacker Cosmic 1CA 2026", "p": "Originalpreis", "r": "Rabatt", "check": "Prüfen", "new": "Neu 🔄", "author": "Erstellt von Règne"},
+    "🇩🇪 Deutschland / 🇦🇹 / 🇨🇭": {"t": "Rabattrechner", "st": "Hacker Cosmic 1CA 2026", "p": "Originalpreis", "r": "Rabatt", "check": "Prüfen", "new": "Neu 🔄", "author": "Erstellt von Règne"},
     "🇵🇱 Polska": {"t": "Mój kalkulator rabatowy", "st": "Hacker Cosmic 1CA 2026", "p": "Cena", "r": "Zniżka", "check": "Sprawdź", "new": "Nowy 🔄", "author": "Stworzone przez Règne"},
     "🇹🇷 Türkiye": {"t": "İndirim hesaplayıcı", "st": "Hacker Cosmic 1CA 2026", "p": "Fiyat", "r": "İndirim", "check": "Kontrol et", "new": "Yeni 🔄", "author": "Règne tarafından oluşturuldu"},
     "🇨🇳 中国 (Chine)": {"t": "折扣计算器", "st": "Hacker Cosmic 1CA 2026", "p": "原价", "r": "折扣", "check": "检查", "new": "新 🔄", "author": "由 Règne 创建"},
     "🇯🇵 日本 (Japon)": {"t": "割引計算機", "st": "Hacker Cosmic 1CA 2026", "p": "元の価格", "r": "割引", "check": "チェック", "new": "新 🔄", "author": "Règne による作成"},
-    "🇷🇺 Россия (Russie)": {"t": "Калькулятор скидок", "st": "Hacker Cosmic 1CA 2026", "p": "Цена", "r": "Скидка", "check": "Проверить", "new": "Новый 🔄", "author": "Создано Règne"},
-    "🇮🇳 India (Hindi)": {"t": "डिस्काउंट कैलकुलेटर", "st": "Hacker Cosmic 1CA 2026", "p": "मूल कीमत", "r": "छूट", "check": "जांचें", "new": "नया 🔄", "author": "Règne द्वारा निर्मित"}
+    "🇰🇷 대한민국 (Corée)": {"t": "나의 할인 계산기", "st": "Hacker Cosmic 1CA 2026", "p": "원래 가격", "r": "할인", "check": "확인", "new": "새로운 🔄", "author": "Règne 제작"},
+    "🇷🇺 Россия (Russie)": {"t": "Мой калькулятор скидок", "st": "Hacker Cosmic 1CA 2026", "p": "Цена", "r": "Скидка", "check": "Проверить", "new": "Новый 🔄", "author": "Создано Règne"},
+    "🇮🇳 India (Hindi)": {"t": "डिस्काउंट कैलकुलेटर", "st": "Hacker Cosmic 1CA 2026", "p": "मूल कीमत", "r": "छूट", "check": "जांचें", "new": "नया 🔄", "author": "Règne द्वारा निर्मित"},
+    "🇻🇳 Việt Nam": {"t": "Máy tính giảm giá", "st": "Hacker Cosmic 1CA 2026", "p": "Giá gốc", "r": "Giảm giá", "check": "Kiểm tra", "new": "Mới 🔄", "author": "Tạo bởi Règne"}
 }
 
-# --- CHATBOT ---
+# --- CERVEAU DU CHATBOT ---
 def cerveau_ia(question):
     q = question.lower().strip()
     if re.search(r'\d+', q) and any(op in q for op in ['+', '-', '*', '/']):
@@ -65,13 +67,15 @@ with st.sidebar:
         st.rerun()
 
 with c_main:
-    # LOGO POSITIONNÉ ICI (Bien visible au-dessus du titre)
-    try: st.image("IMG_0956.png", width=120)
-    except: st.write("📷")
-    
+    # TITRES ET AUTEUR
     st.markdown(f'<div class="responsive-title">{T["t"]}</div>', unsafe_allow_html=True)
     st.markdown(f'<div class="responsive-subtitle">{T["st"]}</div>', unsafe_allow_html=True)
     st.write(f"**{T['author']}**")
+
+    # LOGO DESCENDU (Bien visible au centre de la présentation)
+    st.write("") 
+    try: st.image("IMG_0956.png", width=100)
+    except: st.write("📷")
     st.write("---")
     
     # CALCULATEUR
