@@ -4,20 +4,33 @@ import random
 # 1. Configuration de la page
 st.set_page_config(page_title="Hacker Cosmic 1CA 2026", layout="wide")
 
-# --- LANGUES (Menu à droite) ---
-languages = {
-    "Français": {"title": "Calculateur Hacker Cosmic", "author": "Créé par Règne", "price": "Prix d'origine (€)", "promo": "Réduction (%)", "check": "Vérifier", "new": "Nouvel exercice 🔄"},
-    "English": {"title": "Hacker Cosmic Calculator", "author": "Created by Règne", "price": "Original Price (€)", "promo": "Discount (%)", "check": "Check", "new": "New Exercise 🔄"},
-    "Español": {"title": "Calculadora Hacker Cosmic", "author": "Creado por Règne", "price": "Precio original (€)", "promo": "Descuento (%)", "check": "Verificar", "new": "Nuevo ejercicio 🔄"}
-}
+# --- FONCTION INTELLIGENTE (RÉPOND À TOUT) ---
+def cerveau_ia(question):
+    q = question.lower()
+    # Réponses personnalisées
+    if "qui" in q and "cree" in q:
+        return "Ce site incroyable a été créé par mon maître, le grand **Règne** ! 👑"
+    elif "bonbon" in q:
+        return "Un bonbon est une friandise faite de sucre et d'arômes. **Règne** m'a dit de ne pas en abuser pour les dents ! 🍬"
+    elif "ca va" in q or "ça va" in q:
+        return "Je vais super bien ! Je suis boosté par l'énergie de **Règne**. Et toi ?"
+    elif "meteo" in q:
+        return "Il fait toujours beau dans l'univers Hacker Cosmic 2026 ! ☀️"
+    elif "calcul" in q or "math" in q:
+        return "Je suis un expert ! Utilise le calculateur de **Règne** au centre de l'écran."
+    elif "ia" in q or "robot" in q:
+        return "Je suis une intelligence artificielle au service de **Règne**."
+    else:
+        # Réponse quand il ne connaît pas le mot exact
+        return f"'{question}' ? C'est une excellente question ! En tant qu'IA de **Règne**, je trouve cela passionnant. Tu veux que j'en parle à mon créateur ?"
 
-# --- BARRE LATÉRALE : CHATBOT INTELLIGENT ---
+# --- BARRE LATÉRALE : CHATBOT ---
 with st.sidebar:
     st.title("🤖 Chatbot 1CA")
     st.write("Assistant officiel de **Règne**")
     
     if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "Salut ! Je suis l'IA créée par **Règne**. Pose-moi n'importe quelle question, je répondrai à tout !"}]
+        st.session_state.messages = [{"role": "assistant", "content": "Salut ! Je suis l'IA de **Règne**. Pose-moi n'importe quelle question sur le monde, je répondrai à tout !"}]
 
     for m in st.session_state.messages:
         with st.chat_message(m["role"]): st.markdown(m["content"])
@@ -26,21 +39,8 @@ with st.sidebar:
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"): st.markdown(prompt)
         
-        # LOGIQUE DE RÉPONSE ÉTENDUE
-        p = prompt.lower()
-        if "qui" in p and "cree" in p:
-            reponse = "Ce site exceptionnel a été entièrement conçu et créé par **Règne** en 2026 ! 👑"
-        elif "ca va" in p or "ça va" in p:
-            reponse = "Je vais super bien ! Je suis boosté par l'énergie cosmique de **Règne**. Et toi ?"
-        elif "aide" in p or "comment" in p or "calcul" in p:
-            reponse = "C'est facile : Prends ton prix, multiplie par la remise, divise par 100. Soustrais ça du prix de base. Besoin d'un exemple ?"
-        elif "2026" in p:
-            reponse = "2026 est l'année de la révolution Hacker Cosmic lancée par **Règne** !"
-        elif "merci" in p:
-            reponse = "Tout le plaisir est pour moi ! **Règne** m'a appris à être poli et efficace."
-        else:
-            # Réponse générique intelligente pour "répondre à tout"
-            reponse = f"C'est une excellente remarque ! En tant qu'IA de **Règne**, je trouve que '{prompt}' est un sujet passionnant. Tu veux que j'approfondisse ou qu'on fasse des maths ?"
+        # Le chatbot utilise son cerveau
+        reponse = cerveau_ia(prompt)
 
         with st.chat_message("assistant"): st.markdown(reponse)
         st.session_state.messages.append({"role": "assistant", "content": reponse})
@@ -49,34 +49,31 @@ with st.sidebar:
 col_main, col_lang = st.columns([0.8, 0.2])
 
 with col_lang:
-    selected_lang = st.selectbox("🌐 Language", list(languages.keys()))
-    T = languages[selected_lang]
+    st.selectbox("🌐 Langue", ["Français", "English", "Español"])
 
 with col_main:
-    # Ton logo
     try:
         st.image("IMG_0956.png", width=200)
     except:
         st.info("Logo Hacker Cosmic")
 
-    st.title(f"{T['title']} 1CA 2026")
-    st.markdown(f"### {T['author']}")
+    st.title("Calculateur Hacker Cosmic 1CA 2026")
+    st.markdown("### Créé par **Règne**")
     st.write("---")
 
     # Calculateur
     c1, c2 = st.columns(2)
     with c1:
-        prix_origine = st.number_input(T["price"], min_value=0.0, value=100.0)
+        prix_orig = st.number_input("Prix d'origine (€)", min_value=0.0, value=100.0)
     with c2:
-        reduction = st.number_input(T["promo"], min_value=0.0, max_value=100.0, value=10.0)
+        reduction = st.number_input("Réduction (%)", min_value=0.0, max_value=100.0, value=10.0)
     
-    prix_final = prix_origine * (1 - reduction / 100)
-    st.header(f"Total : {prix_final:.2f} €")
+    st.header(f"Total : {prix_orig * (1 - reduction / 100):.2f} €")
 
     st.write("---")
 
     # Exercice Infini
-    st.header(T["new"].split(' ')[0] + " " + "Exercice")
+    st.header("📝 Exercice Infini de Règne")
     if 'exo_prix' not in st.session_state:
         st.session_state.exo_prix = random.randint(10, 500)
         st.session_state.exo_remise = random.randint(5, 75)
@@ -85,14 +82,12 @@ with col_main:
     st.write(f"**Défi :** Un article coûte **{st.session_state.exo_prix} €** avec **{st.session_state.exo_remise} %** de remise.")
     user_ans = st.number_input("Ta réponse (€) :", key="ans_input")
 
-    bx1, bx2 = st.columns(2)
-    with bx1:
-        if st.button(T["check"]):
-            if abs(user_ans - st.session_state.sol) < 0.05:
-                st.success("✅ Incroyable ! Tu as l'esprit d'un Hacker Cosmic.")
-            else:
-                st.error(f"❌ Pas tout à fait... la réponse était {st.session_state.sol:.2f} €")
-    with bx2:
-        if st.button(T["new"]):
-            del st.session_state['exo_prix']
-            st.rerun()
+    if st.button("Vérifier"):
+        if abs(user_ans - st.session_state.sol) < 0.05:
+            st.success("✅ Bravo ! Tu es digne de Règne !")
+        else:
+            st.error(f"❌ La réponse était {st.session_state.sol:.2f} €")
+    
+    if st.button("Nouvel exercice 🔄"):
+        del st.session_state['exo_prix']
+        st.rerun()
