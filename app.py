@@ -1,100 +1,90 @@
 import streamlit as st
 import random
 from datetime import datetime
-import time
 
 # 1. CONFIGURATION
-st.set_page_config(page_title="Hacker Cosmic 1CA", page_icon="🛰️", layout="wide")
+st.set_page_config(page_title="Hacker Cosmic IA", page_icon="🤖", layout="wide")
 
-# 2. DESIGN ÉLITE NÉON
+# 2. DESIGN NÉON & GALAXIE
 st.markdown("""
     <style>
     .stApp { background: radial-gradient(ellipse at bottom, #1B2735 0%, #050505 100%); color: white; }
-    h1 { color: #FF00FF !important; text-shadow: 0 0 20px #FF00FF, 0 0 40px #FF00FF; text-align: center; font-family: 'Orbitron', sans-serif; }
+    h1 { color: #FF00FF !important; text-shadow: 0 0 20px #FF00FF; text-align: center; font-family: 'Orbitron', sans-serif; }
     h2, h3, label, p, span { color: #00FFFF !important; text-shadow: 0 0 10px #00FFFF; }
     .stMetric div { color: #39FF14 !important; }
-    img { border-radius: 20px; border: 3px solid #00FFFF; box-shadow: 0 0 20px #00FFFF; }
     [data-testid="stSidebar"] { background-color: #000000 !important; border-right: 2px solid #FF00FF; }
     </style>
     """, unsafe_allow_html=True)
 
-# 3. MENU SIDEBAR (Signé Règne)
+# 3. SIDEBAR
 with st.sidebar:
-    st.markdown('<p style="color:#FF00FF; font-weight:bold; border:2px solid #FF00FF; padding:10px; border-radius:15px; text-align:center; box-shadow: 0 0 15px #FF00FF;">👑 CRÉATEUR : RÈGNE</p>', unsafe_allow_html=True)
-    st.title("🛰️ Navigation 1CA")
-    menu = st.radio("Systèmes :", [
-        "💰 Calculateur Pro", "📚 Encyclopédie du Code", "🪐 Gravité Spatiale",
-        "📟 Traducteur Morse", "⚔️ Duel Multijoueur", "📐 Zone Maths", "🟢 Matrix Mode"
-    ])
+    st.markdown('<p style="color:#FF00FF; font-weight:bold; border:2px solid #FF00FF; padding:10px; border-radius:15px; text-align:center;">👑 CRÉATEUR : RÈGNE</p>', unsafe_allow_html=True)
+    st.title("🛰️ Système")
+    menu = st.radio("Navigation :", ["💰 Calculateur", "🤖 IA Chatbots", "📚 Exposé Code", "🔐 Labo Crypto", "🎮 Duel Multi", "🟢 Matrix"])
     st.write("---")
-    st.caption("🚀 Hacker Cosmic 2026 | Spécial 1CA")
+    st.caption("🚀 Hacker Cosmic 2026 | v19.0")
 
 # 4. EN-TÊTE
-col1, col2 = st.columns(2)
-with col1: st.image("IMG_0956.png", width=220)
-with col2:
+c1, c2 = st.columns(2)
+with c1: st.image("IMG_0956.png", width=200)
+with c2:
     st.title("HACKER COSMIC 1CA 2026")
     st.components.v1.html("""
-        <script>function parler(){var m=new SpeechSynthesisUtterance("Lancement du module multimédia. Regardez bien la vidéo d'explication.");m.lang='fr-FR';window.speechSynthesis.speak(m);}</script>
-        <button onclick="parler()" style="background-color:transparent; color:#00FFFF; border:2px solid #00FFFF; padding:10px; border-radius:15px; cursor:pointer; font-weight:bold; width: 100%; box-shadow: 0 0 15px #00FFFF;">🔈 INITIALISER L'IA</button>
+        <script>function parler(){var m=new SpeechSynthesisUtterance("Double intelligence artificielle activée. Maître Règne, les cerveaux sont prêts.");m.lang='fr-FR';window.speechSynthesis.speak(m);}</script>
+        <button onclick="parler()" style="background-color:transparent; color:#FF00FF; border:2px solid #FF00FF; padding:10px; border-radius:15px; cursor:pointer; font-weight:bold; width:100%;">🔈 INITIALISER LES IA</button>
     """, height=70)
 
-# 5. LOGIQUE DES PAGES
+# 5. PAGES
+if menu == "🤖 IA Chatbots":
+    st.header("🤖 Centre de Recherche IA")
+    tab1, tab2 = st.tabs(["🌌 IA Cosmique (Générale)", "🐍 IA Master-Code (Spécialiste)"])
 
-if menu == "📚 Encyclopédie du Code":
-    st.header("📚 L'Encyclopédie du Code")
-    
-    # Image de Cyber-Codeur
-    st.image("https://unsplash.com", caption="Le monde du codage t'attend...")
-    
-    st.write("""
-    ### 🤖 1. C'est quoi le codage ?
-    Imagine que tu veux commander un robot pour qu'il te prépare un **chocolat chaud**. Tu ne peux pas lui dire simplement "fais-moi un chocolat". Il faut lui donner des **étapes ultra précises**.
-    
-    ### 🔢 2. Le langage des machines
-    L'ordinateur ne connaît que le **Binaire** (des 0 et des 1). Python est le traducteur magique entre ton cerveau et la machine.
-    """)
-    
-    # --- VIDÉO IA ---
-    st.subheader("📺 Vidéo : Qu'est-ce que l'Intelligence Artificielle ?")
-    st.video("https://youtube.com") # Une vidéo courte et top sur l'IA
-    
-    st.write("""
-    ### 🧱 3. Les trois briques du Hacker
-    *   **Les Variables :** La mémoire.
-    *   **Les Conditions (IF) :** L'intelligence du choix.
-    *   **Les Boucles (FOR) :** La puissance de répétition.
-    """)
-    st.info("💡 **Le savais-tu ?** Plus de 500 nouveaux langages de code existent, mais Python est le roi pour l'IA !")
+    with tab1:
+        st.subheader("Discute avec l'IA du système")
+        user_q = st.text_input("Pose une question (ex: Qui es-tu ?, Salut, Quel jour ?) :", key="gen")
+        if st.button("Envoyer à l'IA Cosmique"):
+            responses = {
+                "salut": "Salut à toi, jeune Hacker de la 1CA !",
+                "qui es-tu ?": "Je suis l'IA de bord créée par le Maître Règne.",
+                "quel jour ?": f"Nous sommes le {datetime.now().strftime('%d/%m/%Y')}.",
+                "aide": "Utilise le menu à gauche pour explorer mes modules.",
+                "recompense": "Tiens, un cadeau ! 🎁"
+            }
+            res = responses.get(user_q.lower(), "Analyse en cours... Je ne connais pas encore la réponse à tout, mais j'apprends !")
+            st.chat_message("assistant").write(res)
 
-elif menu == "💰 Calculateur Pro":
+    with tab2:
+        st.subheader("Pose tes questions de codage")
+        code_q = st.text_input("Question technique (ex: Python, Variable, Bug, If) :", key="code")
+        if st.button("Demander au Spécialiste"):
+            coding_responses = {
+                "python": "C'est le langage de ce site ! Il est super puissant pour l'IA.",
+                "variable": "Une variable est une boîte pour stocker des données (ex: score = 10).",
+                "bug": "Un bug est une erreur dans le code. Les réparer fait de toi un pro !",
+                "if": "Le 'IF' est une condition. Il permet à l'ordi de faire des choix.",
+                "print": "La fonction print() sert à afficher du texte sur l'écran."
+            }
+            res = coding_responses.get(code_q.lower(), "Désolé, je ne parle que de codage. Pour le reste, demande à l'IA Cosmique !")
+            st.chat_message("assistant").write(f"🐍 **Master-Code dit :** {res}")
+
+elif menu == "💰 Calculateur":
     st.header("💰 Calculateur de Soldes")
-    pi = st.number_input("Prix d'achat (€)", value=100.0)
+    pi = st.number_input("Prix (€)", value=100.0)
     re = st.slider("Réduction (%)", 0, 100, 20)
-    st.metric("Prix Final", f"{pi * (1 - re/100)} €", delta=f"-{(pi*re)/100} €")
+    st.metric("Prix Final", f"{pi*(1-re/100)} €")
 
-elif menu == "🪐 Gravité Spatiale":
-    st.header("🪐 Ton poids dans l'espace")
-    p = st.number_input("Poids sur Terre (kg) :", value=45.0)
-    dest = st.selectbox("Destination :", ["Lune 🌑", "Mars 🔴", "Jupiter 🪐"])
-    f = {"Lune 🌑": 0.16, "Mars 🔴": 0.37, "Jupiter 🪐": 2.52}
-    st.metric(f"Sur {dest}", f"{round(p*f[dest], 2)} kg")
+elif menu == "📚 Exposé Code":
+    st.header("📚 L'Encyclopédie du Code")
+    st.write("Le codage est l'art de parler aux machines.")
+    url_v = "https://youtube.com"
+    st.video(url_v)
+    st.link_button("🚀 Ouvrir la vidéo proprement", url_v)
 
-elif menu == "⚔️ Duel Multijoueur":
-    st.header("⚔️ Duel 1 vs 1")
-    if 's' not in st.session_state: st.session_state.s = random.randint(1, 10)
-    g = st.number_input("Devine le code (1-10) :", 1, 10)
-    if st.button("Vérifier"):
-        if g == st.session_state.s: 
-            st.balloons(); st.success("WIN !"); st.session_state.s = random.randint(1, 10)
-        else: st.error("NON !")
+elif menu == "🔐 Labo Crypto":
+    st.header("🔐 Labo de Cryptage")
+    msg = st.text_input("Message à crypter :", "HACKER")
+    st.code(f"Code : {msg.upper()[::-1]}") # Inversion simple pour l'exemple
 
-elif menu == "🟢 Matrix Mode":
-    st.header("🟢 Infiltration")
-    if st.button("DÉMARRER"):
+elif menu == "🟢 Matrix":
+    if st.button("RUN"):
         st.code("\n".join(["".join([random.choice("01") for _ in range(40)]) for _ in range(5)]))
-
-elif menu == "📐 Zone Maths":
-    st.header("📐 Aide aux Devoirs 1CA")
-    v = datetime(2026, 7, 1) - datetime.now()
-    st.metric("⏳ Jours avant les vacances", f"{v.days} jours")
