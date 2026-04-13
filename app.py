@@ -5,17 +5,16 @@ import re
 # 1. Configuration de la page
 st.set_page_config(page_title="Hacker Cosmic 1CA 2026", layout="wide")
 
-# --- STYLE CSS (LOGO ET TITRES ADAPTATIFS) ---
+# --- STYLE CSS (TEXTES ADAPTATIFS ET LOGO BIEN PLACÉ) ---
 st.markdown("""
     <style>
-    .responsive-title { font-size: clamp(20px, 4vw, 32px); font-weight: bold; line-height: 1.1; margin-bottom: 5px; }
-    .responsive-subtitle { font-size: clamp(14px, 2.5vw, 18px); color: #666; margin-bottom: 10px; }
-    .block-container { padding-top: 1.5rem; }
-    [data-testid="stSidebar"] { background-color: #f8f9fa; }
+    .responsive-title { font-size: clamp(20px, 4vw, 36px); font-weight: bold; line-height: 1.1; margin-bottom: 5px; }
+    .responsive-subtitle { font-size: clamp(14px, 2.5vw, 20px); color: #666; margin-bottom: 10px; }
+    .block-container { padding-top: 2rem; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- DICTIONNAIRE MONDIAL (TOUTES LES LANGUES OFFICIELLES) ---
+# --- DICTIONNAIRE MONDIAL COMPLET (TOUTES LES LANGUES NATIONALES) ---
 languages = {
     "🇫🇷 France / Monde": {"t": "Mon calculateur de réduction", "st": "Hacker Cosmic 1CA 2026", "p": "Prix d'origine", "r": "Réduction", "check": "Vérifier", "new": "Nouveau Défi 🔄", "author": "Créé par Règne"},
     "🇲🇦 Maroc / 🇩🇿 Algérie": {"t": "آلة حاسبة الخصم", "st": "Hacker Cosmic 1CA 2026", "p": "السعر الأصلي", "r": "خصم", "check": "تحقق", "new": "تحدي جديد 🔄", "author": "تم إنشاؤه بواسطة Règne"},
@@ -29,11 +28,10 @@ languages = {
     "🇩🇪 Deutschland": {"t": "Rabattrechner", "st": "Hacker Cosmic 1CA 2026", "p": "Originalpreis", "r": "Rabatt", "check": "Prüfen", "new": "Neu 🔄", "author": "Erstellt von Règne"},
     "🇵🇱 Polska": {"t": "Mój kalkulator rabatowy", "st": "Hacker Cosmic 1CA 2026", "p": "Cena", "r": "Zniżka", "check": "Sprawdź", "new": "Nowy 🔄", "author": "Stworzone przez Règne"},
     "🇹🇷 Türkiye": {"t": "İndirim hesaplayıcı", "st": "Hacker Cosmic 1CA 2026", "p": "Fiyat", "r": "İndirim", "check": "Kontrol et", "new": "Yeni 🔄", "author": "Règne tarafından oluşturuldu"},
-    "🇨🇳 中国 (Chinese)": {"t": "折扣计算器", "st": "Hacker Cosmic 1CA 2026", "p": "原价", "r": "折扣", "check": "检查", "new": "新 🔄", "author": "由 Règne 创建"},
-    "🇯🇵 日本 (Japanese)": {"t": "割引計算機", "st": "Hacker Cosmic 1CA 2026", "p": "元の価格", "r": "割引", "check": "チェック", "new": "新 🔄", "author": "Règne による作成"},
-    "🇰🇷 대한민국": {"t": "나의 할인 계산기", "st": "Hacker Cosmic 1CA 2026", "p": "원래 가격", "r": "할인", "check": "확인", "new": "새로운 🔄", "author": "Règne 제작"},
-    "🇷🇺 Россия": {"t": "Мой калькулятор скидок", "st": "Hacker Cosmic 1CA 2026", "p": "Цена", "r": "Скидка", "check": "Проверить", "new": "Новый 🔄", "author": "Создано Règne"},
-    "🇮🇳 India (हिन्दी)": {"t": "डिस्काउंट कैलकुलेटर", "st": "Hacker Cosmic 1CA 2026", "p": "मूल कीमत", "r": "छूट", "check": "जांचें", "new": "नया 🔄", "author": "Règne द्वारा निर्मित"}
+    "🇨🇳 中国 (Chine)": {"t": "折扣计算器", "st": "Hacker Cosmic 1CA 2026", "p": "原价", "r": "折扣", "check": "检查", "new": "新 🔄", "author": "由 Règne 创建"},
+    "🇯🇵 日本 (Japon)": {"t": "割引計算機", "st": "Hacker Cosmic 1CA 2026", "p": "元の価格", "r": "割引", "check": "チェック", "new": "新 🔄", "author": "Règne による作成"},
+    "🇷🇺 Россия (Russie)": {"t": "Калькулятор скидок", "st": "Hacker Cosmic 1CA 2026", "p": "Цена", "r": "Скидка", "check": "Проверить", "new": "Новый 🔄", "author": "Создано Règne"},
+    "🇮🇳 India (Hindi)": {"t": "डिस्काउंट कैलकुलेटर", "st": "Hacker Cosmic 1CA 2026", "p": "मूल कीमत", "r": "छूट", "check": "जांचें", "new": "नया 🔄", "author": "Règne द्वारा निर्मित"}
 }
 
 # --- CHATBOT ---
@@ -48,7 +46,7 @@ def cerveau_ia(question):
     return f"En tant qu'IA de **Règne**, je trouve que '{question}' est fascinant !"
 
 # --- INTERFACE ---
-c_main, c_lang = st.columns([0.7, 0.3])
+c_main, c_lang = st.columns([0.75, 0.25])
 with c_lang:
     sel_lang = st.selectbox("🌐 Choisi ton Pays / Langue", list(languages.keys()))
     T = languages[sel_lang]
@@ -67,8 +65,8 @@ with st.sidebar:
         st.rerun()
 
 with c_main:
-    # LOGO POSITIONNÉ IDÉALEMENT (Au-dessus du titre)
-    try: st.image("IMG_0956.png", width=100)
+    # LOGO POSITIONNÉ ICI (Bien visible au-dessus du titre)
+    try: st.image("IMG_0956.png", width=120)
     except: st.write("📷")
     
     st.markdown(f'<div class="responsive-title">{T["t"]}</div>', unsafe_allow_html=True)
@@ -87,7 +85,7 @@ with c_main:
     st.header("🎯 Défi")
     if 'ex_p' not in st.session_state:
         st.session_state.ex_p = random.randint(20, 500)
-        st.session_state.ex_r = random.choice([10, 20, 25, 50, 75])
+        st.session_state.ex_r = random.choice([5, 10, 15, 20, 25, 30, 40, 50])
         st.session_state.sol = st.session_state.ex_p * (1 - st.session_state.ex_r / 100)
 
     st.write(f"Prix : **{st.session_state.ex_p}€** | Remise : **{st.session_state.ex_r}%**")
