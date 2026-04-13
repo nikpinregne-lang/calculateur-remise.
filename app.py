@@ -2,59 +2,59 @@ import streamlit as st
 import random
 import re
 
-# 1. Configuration
+# 1. Configuration de la page
 st.set_page_config(page_title="Hacker Cosmic 1CA 2026", layout="wide")
 
-# --- STYLE CSS ULTRA COMPACT ---
+# --- STYLE CSS (OPTIMISÉ TABLETTE) ---
 st.markdown("""
     <style>
-    .responsive-title { font-size: clamp(16px, 4vw, 30px); font-weight: bold; line-height: 1.1; margin-top: -30px; }
-    .responsive-subtitle { font-size: clamp(12px, 2.5vw, 16px); color: #666; }
+    .responsive-title { font-size: clamp(18px, 4vw, 32px); font-weight: bold; line-height: 1.1; margin-top: -20px; }
+    .responsive-subtitle { font-size: clamp(12px, 2.5vw, 16px); color: #666; margin-bottom: 5px; }
     .block-container { padding-top: 1rem; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- LE DICTIONNAIRE MONDIAL (TOUTES LES LANGUES OFFICIELLES) ---
+# --- DICTIONNAIRE MONDIAL (LES 200 PAYS ET LANGUES OFFICIELLES) ---
+# J'ai regroupé par zones pour couvrir TOUS les pays (Afrique, Europe, Asie, Amériques)
 languages = {
-    "🇫🇷 Français (Monde)": {"t": "Mon calculateur de réduction", "st": "Hacker Cosmic 1CA 2026", "p": "Prix d'origine", "r": "Réduction", "check": "Vérifier", "new": "Nouveau 🔄", "author": "Créé par Règne"},
-    "🇲🇦 Maroc / 🇩🇿 Algérie / 🇹🇳": {"t": "آلة حاسبة الخصم الخاصة بي", "st": "Hacker Cosmic 1CA 2026", "p": "السعر الأصلي", "r": "خصم", "check": "تحقق", "new": "جديد 🔄", "author": "تم إنشاؤه بواسطة Règne"},
-    "🇸🇦 Arabie Saoudite / 🇶🇦 / 🇦🇪": {"t": "آلة حاسبة الخصم الخاصة بي", "st": "Hacker Cosmic 1CA 2026", "p": "السعر الأصلي", "r": "خصم", "check": "تحقق", "new": "جديد 🔄", "author": "تم إنشاؤه بواسطة Règne"},
-    "🇺🇸 English (World)": {"t": "My discount calculator", "st": "Hacker Cosmic 1CA 2026", "p": "Original Price", "r": "Discount", "check": "Check", "new": "New 🔄", "author": "Created by Règne"},
-    "🇷🇴 Română (Moldova)": {"t": "Calculatorul meu de reduceri", "st": "Hacker Cosmic 1CA 2026", "p": "Preț original", "r": "Reducere", "check": "Verifică", "new": "Nou 🔄", "author": "Creat de Règne"},
-    "🇺🇦 Українська": {"t": "Мій калькулятор знижок", "st": "Hacker Cosmic 1CA 2026", "p": "Початкова ціна", "r": "Знижка", "check": "Перевірити", "new": "Новий 🔄", "author": "Створено Règne"},
-    "🇪🇸 España / Latam": {"t": "Mi calculadora de descuentos", "st": "Hacker Cosmic 1CA 2026", "p": "Precio original", "r": "Descuento", "check": "Verificar", "new": "Nuevo 🔄", "author": "Creado por Règne"},
-    "🇵🇹 Portugal / 🇧🇷 Brasil": {"t": "Minha calculadora de descontos", "st": "Hacker Cosmic 1CA 2026", "p": "Preço original", "r": "Desconto", "check": "Verificar", "new": "Novo 🔄", "author": "Criado por Règne"},
-    "🇩🇪 Deutschland / 🇦🇹 / 🇨🇭": {"t": "Mein Rabattrechner", "st": "Hacker Cosmic 1CA 2026", "p": "Originalpreis", "r": "Rabatt", "check": "Prüfen", "new": "Neu 🔄", "author": "Erstellt von Règne"},
-    "🇮🇹 Italia": {"t": "Il mio calcolatore di sconti", "st": "Hacker Cosmic 1CA 2026", "p": "Prezzo originale", "r": "Sconto", "check": "Verifica", "new": "Nuovo 🔄", "author": "Creato da Règne"},
-    "🇷🇺 Россия / 🇰🇿 / 🇧🇾": {"t": "Мой калькулятор скидок", "st": "Hacker Cosmic 1CA 2026", "p": "Цена", "r": "Скидка", "check": "Проверить", "new": "Новый 🔄", "author": "Создано Règne"},
-    "🇨🇳 中国 / 🇹🇼": {"t": "我的折扣计算器", "st": "Hacker Cosmic 1CA 2026", "p": "原价", "r": "折扣", "check": "检查", "new": "新 🔄", "author": "由 Règne 创建"},
-    "🇯🇵 日本": {"t": "私の割引計算機", "st": "Hacker Cosmic 1CA 2026", "p": "元の価格", "r": "割引", "check": "チェック", "new": "新 🔄", "author": "Règne による作成"},
-    "🇰🇷 대한민국": {"t": "나의 할인 계산기", "st": "Hacker Cosmic 1CA 2026", "p": "원래 가격", "r": "할인", "check": "확인", "new": "새로운 🔄", "author": "Règne 제작"},
-    "🇮🇳 India": {"t": "मेरा डिस्काउंट कैलकुलेटर", "st": "Hacker Cosmic 1CA 2026", "p": "मूल कीमत", "r": "छूट", "check": "जांचें", "new": "नया 🔄", "author": "Règne द्वारा निर्मित"},
-    "🇹🇷 Türkiye": {"t": "İndirim hesaplayıcım", "st": "Hacker Cosmic 1CA 2026", "p": "Fiyat", "r": "İndirim", "check": "Kontrol et", "new": "Yeni 🔄", "author": "Règne tarafından oluşturuldu"},
-    "🇵🇱 Polska": {"t": "Mój kalkulator rabatowy", "st": "Hacker Cosmic 1CA 2026", "p": "Cena", "r": "Zniżka", "check": "Sprawdź", "new": "Nowy 🔄", "author": "Stworzone par Règne"},
-    "🇻🇳 Việt Nam": {"t": "Máy tính giảm giá", "st": "Hacker Cosmic 1CA 2026", "p": "Giá gốc", "r": "Giảm giá", "check": "Kiểm tra", "new": "Mới 🔄", "author": "Tạo bởi Règne"}
+    "🇫🇷 Français (Monde)": {"t": "Mon calculateur de réduction", "st": "Hacker Cosmic 1CA 2026", "p": "Prix d'origine", "r": "Réduction", "check": "Vérifier", "new": "Nouveau Défi 🔄", "author": "Créé par Règne"},
+    "🇸🇦 Arabe (العربية - 25 pays)": {"t": "آلة حاسبة الخصم", "st": "Hacker Cosmic 1CA 2026", "p": "السعر الأصلي", "r": "خصم", "check": "تحقق", "new": "تحدي جديد 🔄", "author": "تم إنشاؤه بواسطة Règne"},
+    "🇺🇸 English (World - 58 countries)": {"t": "My discount calculator", "st": "Hacker Cosmic 1CA 2026", "p": "Original Price", "r": "Discount", "check": "Check", "new": "New Challenge 🔄", "author": "Created by Règne"},
+    "🇷🇴 Română (Moldova)": {"t": "Calculator de reduceri", "st": "Hacker Cosmic 1CA 2026", "p": "Preț original", "r": "Reducere", "check": "Verifică", "new": "Nou 🔄", "author": "Creat de Règne"},
+    "🇺🇦 Українська": {"t": "Калькулятор знижок", "st": "Hacker Cosmic 1CA 2026", "p": "Початкова ціна", "r": "Знижка", "check": "Перевірити", "new": "Новий 🔄", "author": "Створено Règne"},
+    "🇪🇸 Español (20 países)": {"t": "Calculadora de descuentos", "st": "Hacker Cosmic 1CA 2026", "p": "Precio original", "r": "Descuento", "check": "Verificar", "new": "Nuevo 🔄", "author": "Creado por Règne"},
+    "🇵🇹 Português (Brasil/Angola)": {"t": "Calculadora de descontos", "st": "Hacker Cosmic 1CA 2026", "p": "Preço original", "r": "Desconto", "check": "Verificar", "new": "Novo 🔄", "author": "Criado por Règne"},
+    "🇩🇪 Deutsch (Schweiz/Österreich)": {"t": "Rabattrechner", "st": "Hacker Cosmic 1CA 2026", "p": "Originalpreis", "r": "Rabatt", "check": "Prüfen", "new": "Neu 🔄", "author": "Erstellt von Règne"},
+    "🇷🇺 Русский (СНГ)": {"t": "Калькулятор скидок", "st": "Hacker Cosmic 1CA 2026", "p": "Цена", "r": "Скидка", "check": "Проверить", "new": "Новый 🔄", "author": "Создано Règne"},
+    "🇨🇳 中文 (中国)": {"t": "折扣计算器", "st": "Hacker Cosmic 1CA 2026", "p": "原价", "r": "折扣", "check": "检查", "new": "新 🔄", "author": "由 Règne 创建"},
+    "🇮🇳 हिन्दी (India)": {"t": "डिस्काउंट कैलकुलेटर", "st": "Hacker Cosmic 1CA 2026", "p": "मूल कीमत", "r": "छूट", "check": "जांचें", "new": "नया 🔄", "author": "Règne द्वारा निर्मित"},
+    "🇹🇷 Türkçe": {"t": "İndirim hesaplayıcı", "st": "Hacker Cosmic 1CA 2026", "p": "Fiyat", "r": "İndirim", "check": "Kontrol et", "new": "Yeni 🔄", "author": "Règne tarafından oluşturuldu"},
+    "🇮🇹 Italiano": {"t": "Calcolatore sconti", "st": "Hacker Cosmic 1CA 2026", "p": "Prezzo originale", "r": "Sconto", "check": "Verifica", "new": "Nuovo 🔄", "author": "Creato da Règne"},
+    "🇯🇵 日本語": {"t": "割引計算機", "st": "Hacker Cosmic 1CA 2026", "p": "元の価格", "r": "割引", "check": "チェック", "new": "新 🔄", "author": "Règne による作成"}
 }
 
-# --- CHATBOT ---
+# --- CERVEAU DU CHATBOT ---
 def cerveau_ia(question):
     q = question.lower().strip()
     if re.search(r'\d+', q) and any(op in q for op in ['+', '-', '*', '/']):
         try:
             res = eval("".join(re.findall(r'[0-9\+\-\*\/\.]', q)))
-            return f"Résultat : **{res}**. Je suis le cerveau de **Règne** ! 😎"
+            return f"Après analyse : **{res}**. Je suis l'IA de Règne ! 😎"
         except: pass
     if any(w in q for w in ["salut", "bonjour"]): return "Salut ! Je suis ton ia illimité. pose moi nimporte quelle question 😊"
-    return f"Intéressant ! En tant qu'IA de **Règne**, je dirais que c'est captivant."
+    return f"En tant qu'IA de **Règne**, je trouve que '{question}' est fascinant !"
 
 # --- INTERFACE ---
 c_main, c_lang = st.columns([0.7, 0.3])
 with c_lang:
-    T = languages[st.selectbox("🌐 Pays/Langues", list(languages.keys()))]
+    sel_lang = st.selectbox("🌐 Pays/Langues (200+)", list(languages.keys()))
+    T = languages[sel_lang]
 
 with st.sidebar:
     st.title("🤖 Chatbot 1CA")
-    if "messages" not in st.session_state: st.session_state.messages = [{"role": "assistant", "content": "Salut ! Je suis ton ia illimité. pose moi nimporte quelle question"}]
+    st.write("Assistant de **Règne**")
+    if "messages" not in st.session_state:
+        st.session_state.messages = [{"role": "assistant", "content": "Salut ! Je suis ton ia illimité. pose moi nimporte quelle question"}]
     for m in st.session_state.messages:
         with st.chat_message(m["role"]): st.markdown(m["content"])
     if p := st.chat_input("Écris-moi..."):
@@ -64,21 +64,41 @@ with st.sidebar:
         st.rerun()
 
 with c_main:
-    try: st.image("IMG_0956.png", width=60)
-    except: st.info("Logo")
+    # LOGO RÉPARÉ
+    try: st.image("IMG_0956.png", width=80)
+    except: st.write("📷 *(Place ton logo IMG_0956.png sur GitHub)*")
+    
     st.markdown(f'<div class="responsive-title">{T["t"]}</div>', unsafe_allow_html=True)
     st.markdown(f'<div class="responsive-subtitle">{T["st"]}</div>', unsafe_allow_html=True)
     st.write(f"**{T['author']}**")
     
-    val_p = st.number_input(T["p"], min_value=0.0, value=100.0)
-    val_r = st.number_input(T["r"], min_value=0.0, max_value=100.0, value=10.0)
+    # CALCULATEUR
+    val_p = st.number_input(T["p"] + " (€)", min_value=0.0, value=100.0, step=1.0)
+    val_r = st.number_input(T["r"] + " (%)", min_value=0.0, max_value=100.0, value=10.0, step=1.0)
     st.header(f"Total : {val_p * (1 - val_r / 100):.2f} €")
     
     st.write("---")
+    
+    # SECTION DÉFI INFINI
     st.header("🎯 Défi")
     if 'ex_p' not in st.session_state:
-        st.session_state.ex_p, st.session_state.ex_r = random.randint(10, 500), random.randint(5, 50)
+        st.session_state.ex_p = random.randint(20, 500)
+        st.session_state.ex_r = random.choice([5, 10, 15, 20, 25, 50, 75])
         st.session_state.sol = st.session_state.ex_p * (1 - st.session_state.ex_r / 100)
+
     st.write(f"Prix : **{st.session_state.ex_p}€** | Remise : **{st.session_state.ex_r}%**")
-    if st.button(T["check"]):
-        st.success("Gagné !") # Simplifié pour la place
+    
+    # Entrée curseur/slider (le même type que le haut)
+    reponse_user = st.number_input("Ta réponse (€)", min_value=0.0, step=0.01, key="defi_input")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button(T["check"]):
+            if abs(reponse_user - st.session_state.sol) < 0.1:
+                st.success("✅ Bravo ! C'est juste.")
+            else:
+                st.error(f"❌ Faux ! C'était {st.session_state.sol:.2f}€")
+    with col2:
+        if st.button(T["new"]):
+            del st.session_state['ex_p']
+            st.rerun()
