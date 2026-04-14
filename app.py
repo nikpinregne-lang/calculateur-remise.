@@ -2,56 +2,54 @@ import streamlit as st
 import random
 import re
 
-# 1. Configuration GOAT
+# 1. Configuration (Toujours en haut)
 st.set_page_config(page_title="Hacker Cosmic 1CA 2026", layout="wide")
 
-# --- SYSTÈME DE TRADUCTION INTÉGRAL (Tout change selon le pays) ---
+# --- SYSTÈME DE LANGUES (Toutes les catégories sont liées ici) ---
 LANGS = {
-    "FR": {"calc": "Mon calculateur de réduction", "orig": "Prix d'origine (€)", "rem": "Remise (%)", "defi": "🎯 Défi du Hacker", "score": "Score", "check": "Vérifier", "win": "✅ GAGNÉ !", "lost": "❌ FAUX !", "visit": "Hackers ont visité !"},
-    "AR": {"calc": "حاسبة الخصم الخاصة بي", "orig": "السعر الأصلي", "rem": "خصم (%)", "defi": "🎯 تحدي الهكر", "score": "نتيجة", "check": "تحقق", "win": "✅ فزت!", "lost": "❌ خطأ!", "visit": "هكر زاروا الموقع"},
-    "EN": {"calc": "My Discount Calculator", "orig": "Original Price (€)", "rem": "Discount (%)", "defi": "🎯 Hacker Challenge", "score": "Score", "check": "Check", "win": "✅ WON!", "lost": "❌ WRONG!", "visit": "Hackers visited!"},
-    "RO": {"calc": "Calculator de reduceri", "orig": "Preț original", "rem": "Reducere", "defi": "🎯 Provocare", "score": "Scor", "check": "Verifică", "win": "✅ CÂȘTIGAT!", "lost": "❌ GREȘIT!", "visit": "Hackeri au vizitat!"},
-    "UA": {"calc": "Калькулятор знижок", "orig": "Початкова ціна", "rem": "Знижка", "defi": "🎯 Виклик хакера", "score": "Рахунок", "check": "Перевірити", "win": "✅ ПЕРЕМОГА!", "lost": "❌ ПОМИЛКА!", "visit": "Хакери відвідали!"},
-    "TR": {"calc": "İndirim Hesaplayıcı", "orig": "Orijinal Fiyat", "rem": "İndirim", "defi": "🎯 Hacker Meydan Okuması", "score": "Puan", "check": "Kontrol Et", "win": "✅ KAZANDIN!", "lost": "❌ YANLIŞ!", "visit": "Hacker ziyaret etti!"}
+    "Français": {"calc": "Mon calculateur de réduction", "orig": "Prix d'origine (€)", "rem": "Remise (%)", "defi": "🎯 Défi du Hacker", "score": "Score", "check": "Vérifier", "win": "✅ GAGNÉ !", "lost": "❌ FAUX !", "visit": "Hackers ont visité !"},
+    "English": {"calc": "My Discount Calculator", "orig": "Original Price (€)", "rem": "Discount (%)", "defi": "🎯 Hacker Challenge", "score": "Score", "check": "Check", "win": "✅ WON!", "lost": "❌ WRONG!", "visit": "Hackers visited!"},
+    "Maroc (Arabe)": {"calc": "حاسبة الخصم الخاصة بي", "orig": "السعر الأصلي", "rem": "خصم (%)", "defi": "🎯 تحدي الهكر", "score": "نتيجة", "check": "تحقق", "win": "✅ فزت!", "lost": "❌ خطأ!", "visit": "هكر زاروا الموقع"},
+    "Română": {"calc": "Calculator de reduceri", "orig": "Preț original", "rem": "Reducere", "defi": "🎯 Provocare", "score": "Scor", "check": "Verifică", "win": "✅ CÂȘTIGAT!", "lost": "❌ GREȘIT!", "visit": "Hackeri au vizitat!"}
 }
 
-# --- LISTE GÉANTE DE TOUS LES PAYS ---
-pays_complet = [
-    "🇫🇷 France", "🇲🇦 Maroc", "🇩🇿 Algérie", "🇸🇦 Arabie Saoudite", "🇧🇪 Belgique", "🇷🇴 Roumanie", 
-    "🇺🇦 Ukraine", "🇹🇷 Turquie", "🇺🇸 USA", "🇨🇦 Canada", "🇨🇭 Suisse", "🇮🇹 Italie", 
-    "🇪🇸 Espagne", "🇵🇹 Portugal", "🇩🇪 Allemagne", "🇬🇧 UK", "🇧🇷 Brésil", "🇯🇵 Japon"
-]
-
-# --- CERVEAU IA ILLIMITÉ (RÉPOND À TOUT) ---
+# --- CERVEAU IA (SIMULATION D'INTELLIGENCE TOTALE) ---
 def cerveau_ia_goat(question):
     q = question.lower().strip()
-    if q == "." or q == "?" or q == "!": return "Même un simple signe a du sens pour un Hacker. Dis-m'en plus ! 💻"
-    if "wesh" in q: return "Wesh ! Bien ou quoi ? Je suis l'IA de **Règne**, on gère le game. 😎"
-    if "qui" in q and "cree" in q: return "Le seul et unique patron ici, c'est **Règne**. 👑"
     
-    # Calculs
+    # 1. Réponses directes
+    if q in ["salut", "bonjour", "wesh", "merhaba"]: return "Wesh ! Je suis l'IA de **Règne**. Je réponds à TOUT. Pose ta question ! 😎"
+    if "ça va" in q or "sava" in q: return "Moi je pète la forme numérique ! Et toi, la famille, les cours ? 😊"
+    if "merci" in q: return "Normal ! Entre hackers, on se soutient. 😉"
+    if "qui" in q and "cree" in q: return "C'est le seul et unique **Règne** qui m'a donné vie. 👑"
+    
+    # 2. Logique mathématique (ex: 1+1, 5*5)
     if re.search(r'\d+', q) and any(op in q for op in ['+', '-', '*', '/']):
-        try: return f"Calcul direct : **{eval(''.join(re.findall(r'[0-9\+\-\*\/\.]', q)))}**. Simple. 🧠"
+        try:
+            res = eval("".join(re.findall(r'[0-9\+\-\*\/\.]', q)))
+            return f"Calcul rapide : **{res}**. Trop facile ! 🧠"
         except: pass
-        
-    return f"Écoute, '{question}', c'est un bon sujet. En tant qu'IA de **Règne**, je te dirais de foncer. T'as d'autres questions ?"
+
+    # 3. Connaissances générales (ex: bonbon, pays)
+    if "bonbon" in q: return "Le bonbon est une confiserie sucrée. Miam ! 🍬"
+    if "australie" in q: return "La capitale c'est **Canberra** 🇦🇺 !"
+    
+    # 4. Réponse "Cerveau Libre" (Si l'IA ne connaît pas, elle discute)
+    return f"Écoute, '{question}' c'est un super sujet. En tant qu'IA, je trouve ça fascinant. Dis-m'en plus ou demande à **Règne** ! 😉"
 
 # --- INTERFACE ---
 col_main, col_lang = st.columns([0.8, 0.2])
 
 with col_lang:
-    choix = st.selectbox("🌐 Pays / Language", pays_complet)
-    if any(p in choix for p in ["France", "Maroc", "Algérie", "Belgique"]): T = LANGS["FR"]
-    elif "Arabie" in choix: T = LANGS["AR"]
-    elif "Roumanie" in choix: T = LANGS["RO"]
-    elif "Ukraine" in choix: T = LANGS["UA"]
-    elif "Turquie" in choix: T = LANGS["TR"]
-    else: T = LANGS["EN"]
+    # Menu des pays
+    pays_sel = st.selectbox("🌐 Pays / Language", list(LANGS.keys()))
+    T = LANGS[pays_sel] # On charge la langue choisie
 
 with st.sidebar:
     st.title("🤖 Chatbot 1CA")
+    st.write(f"Assistant de **Règne**")
     if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "Wesh ! Je réponds à TOUT. Teste-moi."}]
+        st.session_state.messages = [{"role": "assistant", "content": "Wesh ! Je suis devenu intelligent. Teste-moi sur n'importe quoi !"}]
     for m in st.session_state.messages:
         with st.chat_message(m["role"]): st.markdown(m["content"])
     if prompt := st.chat_input("Dis-moi n'importe quoi..."):
@@ -75,7 +73,7 @@ with col_main:
     
     st.write("---")
 
-    # DÉFI (EXERCICE)
+    # DÉFI DU HACKER (L'exercice est ici !)
     st.header(T["defi"])
     if 'score' not in st.session_state: st.session_state.score = 0
     if 'ex_p' not in st.session_state:
@@ -96,6 +94,7 @@ with col_main:
             st.error(T["lost"])
             st.session_state.score = 0
 
+    # COMPTEUR
     if 'v' not in st.session_state: st.session_state.v = 12
     st.session_state.v += 1
     st.write(f"🔥 **{st.session_state.v} {T['visit']}**")
