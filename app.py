@@ -108,3 +108,11 @@ with col_main:
         else:
             st.error(f"❌ FAUX ! C'était {st.session_state.sol:.2f}€")
             st.session_state.score = 0
+# --- COMPTEUR DE VISITES (GOAT STYLE) ---
+if 'count' not in st.session_state:
+    st.session_state.count = 10 # On commence à 10 comme sur tes stats !
+else:
+    st.session_state.count += 1
+
+st.write("---")
+st.write(f"🔥 **{st.session_state.count} Hackers** ont visité ce site !")
