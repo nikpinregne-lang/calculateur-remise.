@@ -2,66 +2,70 @@ import streamlit as st
 import random
 import re
 
-# 1. CONFIGURATION ET STYLE
+# 1. Configuration GOAT
 st.set_page_config(page_title="Hacker Cosmic 1CA 2026", layout="wide")
 
-# --- DICTIONNAIRE DE TRADUCTION UNIVERSEL (TOUTES LES LANGUES) ---
-# Chaque langue change les titres, le calculateur et le défi
+# --- LISTE DES 195 PAYS DU MONDE PAR ORDRE ALPHABÉTIQUE ---
+tous_les_pays = sorted([
+    "🇦🇫 Afghanistan", "🇿🇦 Afrique du Sud", "🇦🇱 Albanie", "🇩🇿 Algérie", "🇩🇪 Allemagne", "🇦🇩 Andorre", "🇦🇴 Angola", "🇦🇮 Anguilla", "🇦🇬 Antigua-et-Barbuda", "🇸🇦 Arabie Saoudite", "🇦🇷 Argentine", "🇦🇲 Arménie", "🇦🇺 Australie", "🇦🇹 Autriche", "🇦🇿 Azerbaïdjan", 
+    "🇧🇸 Bahamas", "🇧🇭 Bahreïn", "🇧🇩 Bangladesh", "🇧🇧 Barbade", "🇧🇪 Belgique", "🇧🇿 Belize", "🇧🇯 Bénin", "🇧🇹 Bhoutan", "🇧🇾 Biélorussie", "🇧🇲 Birmanie", "🇧🇴 Bolivie", "🇧🇦 Bosnie-Herzégovine", "🇧🇼 Botswana", "🇧🇷 Brésil", "🇧🇳 Brunei", "🇧🇬 Bulgarie", "🇧🇫 Burkina Faso", "🇧🇮 Burundi", 
+    "🇰🇭 Cambodge", "🇨🇲 Cameroun", "🇨🇦 Canada", "🇨🇻 Cap-Vert", "🇨🇱 Chili", "🇨🇳 Chine", "🇨🇾 Chypre", "🇨🇴 Colombie", "🇰🇲 Comores", "🇨🇬 Congo", "🇨🇩 Congo (RDC)", "🇰🇷 Corée du Sud", "🇰🇵 Corée du Nord", "🇨🇷 Costa Rica", "🇨🇮 Côte d'Ivoire", "🇭🇷 Croatie", "🇨🇺 Cuba", 
+    "🇩🇰 Danemark", "🇩🇯 Djibouti", "🇩🇲 Dominique", "🇪🇬 Égypte", "🇦🇪 Émirats Arabes Unis", "🇪🇨 Équateur", "🇪🇷 Érythrée", "🇪🇸 Espagne", "🇪🇪 Estonie", "🇸🇿 Eswatini", "🇺🇸 USA", "🇪🇹 Éthiopie", "🇫🇮 Finlande", "🇫🇷 France", "🇬🇦 Gabon", "🇬🇲 Gambie", "🇬🇪 Géorgie", "🇬🇭 Ghana", "🇬🇷 Grèce", "🇬🇩 Grenade", "🇬🇹 Guatemala", "🇬🇳 Guinée", "🇬🇼 Guinée-Bissau", "🇬🇶 Guinée équatoriale", "🇬🇾 Guyana", "🇭🇹 Haïti", "🇭🇳 Honduras", "🇭🇺 Hongrie", "🇮🇳 Inde", "🇮🇩 Indonésie", "🇮🇶 Irak", "🇮🇷 Iran", "🇮🇪 Irlande", "🇮🇸 Islande", "🇮🇱 Israël", "🇮🇹 Italie", "🇯🇲 Jamaïque", "🇯🇵 Japon", "🇯🇴 Jordanie", "🇰🇿 Kazakhstan", "🇰🇪 Kenya", "🇰🇬 Kirghizistan", "🇰🇮 Kiribati", "🇰🇼 Koweït", "🇱🇦 Laos", "🇱🇸 Lesotho", "🇱🇻 Lettonie", "🇱🇧 Liban", "🇱🇷 Liberia", "🇱🇾 Libye", "🇱🇮 Liechtenstein", "🇱🇹 Lituanie", "🇱🇺 Luxembourg", "🇲🇰 Macédoine du Nord", "🇲🇬 Madagascar", "🇲🇾 Malaisie", "🇲🇼 Malawi", "🇲🇻 Maldives", "🇲️ Mali", "🇲🇹 Malte", "🇲🇦 Maroc", "🇲🇭 Maurice", "🇲🇷 Mauritanie", "🇲🇽 Mexique", "🇫🇲 Micronésie", "🇲🇩 Moldavie", "🇲🇨 Monaco", "🇲🇳 Mongolie", "🇲🇪 Monténégro", "🇲🇿 Mozambique", "🇳🇦 Namibie", "🇳🇷 Nauru", "🇳🇵 Népal", "🇳🇮 Nicaragua", "🇳🇪 Niger", "🇳🇬 Nigeria", "🇳🇴 Norvège", "🇳🇿 Nouvelle-Zélande", "🇴🇲 Oman", "🇺🇬 Ouganda", "🇺🇿 Ouzbékistan", "🇵🇰 Pakistan", "🇵🇼 Palaos", "🇵🇸 Palestine", "🇵🇦 Panama", "🇵🇬 Papouasie-Nouvelle-Guinée", "🇵🇾 Paraguay", "🇳🇱 Pays-Bas", "🇵🇪 Pérou", "🇵🇭 Philippines", "🇵🇱 Pologne", "🇵🇹 Portugal", "🇶🇦 Qatar", "🇨🇿 Rép. Tchèque", "🇷🇴 Roumanie", "🇬🇧 Royaume-Uni", "🇷🇺 Russie", "🇷🇼 Rwanda", "🇰🇳 Saint-Christophe-et-Niévès", "🇸🇲 Saint-Marin", "🇻🇨 Saint-Vincent", "🇸🇳 Sénégal", "🇷🇸 Serbie", "🇸🇨 Seychelles", "🇸🇬 Singapour", "🇸🇰 Slovaquie", "🇸🇮 Slovénie", "🇸🇴 Somalie", "🇸🇩 Soudan", "🇱🇰 Sri Lanka", "🇸🇪 Suède", "🇨🇭 Suisse", "🇸🇾 Syrie", "🇹🇯 Tadjikistan", "🇹🇿 Tanzanie", "🇹🇩 Tchad", "🇹🇭 Thaïlande", "🇹🇬 Togo", "🇹🇳 Tunisie", "🇹🇲 Turkménistan", "🇹🇷 Turquie", "🇺🇦 Ukraine", "🇺🇾 Uruguay", "🇻🇦 Vatican", "🇻🇪 Venezuela", "🇻🇳 Vietnam", "🇾🇪 Yémen", "🇿🇲 Zambie", "🇿🇼 Zimbabwe"
+])
+
+# --- TRADUCTION ---
 LANGS = {
-    "Français 🇫🇷": {"calc": "Mon calculateur de réduction", "orig": "Prix d'origine (€)", "rem": "Remise (%)", "defi": "🎯 Défi du Hacker", "score": "Score", "check": "Vérifier", "win": "✅ GAGNÉ !", "lost": "❌ FAUX !", "visit": "Hackers ont visité !"},
-    "English 🇺🇸": {"calc": "My Discount Calculator", "orig": "Original Price (€)", "rem": "Discount (%)", "defi": "🎯 Hacker Challenge", "score": "Score", "check": "Check", "win": "✅ WON!", "lost": "❌ WRONG!", "visit": "Hackers visited!"},
-    "Maroc 🇲🇦 (Arabe)": {"calc": "حاسبة الخصم الخاصة بي", "orig": "السعر الأصلي", "rem": "خصم (%)", "defi": "🎯 تحدي الهكر", "score": "نتيجة", "check": "تحقق", "win": "✅ فزت!", "lost": "❌ خطأ!", "visit": "هكر زاروا الموقع"},
-    "Saudi Arabia 🇸🇦": {"calc": "حاسبة الخصم الخاصة بي", "orig": "السعر الأصلي", "rem": "خصم (%)", "defi": "🎯 تحدي الهكر", "score": "نتيجة", "check": "تحقق", "win": "✅ فزت!", "lost": "❌ خطأ!", "visit": "هكر زاروا الموقع"},
-    "Română 🇷🇴": {"calc": "Calculator de reduceri", "orig": "Preț original", "rem": "Reducere", "defi": "🎯 Provocarea Hackerului", "score": "Scor", "check": "Verifică", "win": "✅ CÂȘTIGAT!", "lost": "❌ GREȘIT!", "visit": "Hackeri au vizitat!"},
-    "Türkiye 🇹🇷": {"calc": "İndirim Hesaplayıcı", "orig": "Orijinal Fiyat", "rem": "İndirim", "defi": "🎯 Hacker Meydan Okuması", "score": "Puan", "check": "Kontrol Et", "win": "✅ KAZANDIN!", "lost": "❌ YANLIŞ!", "visit": "Hacker ziyaret etti!"},
-    "Ukraine 🇺🇦": {"calc": "Калькулятор знижок", "orig": "Початкова ціна", "rem": "Знижка", "defi": "🎯 Виклик хакера", "score": "Рахунок", "check": "Перевірити", "win": "✅ ПЕРЕМОГА!", "lost": "❌ ПОМИЛКА!", "visit": "Хакери відвідали!"},
-    "Belgique 🇧🇪": {"calc": "Mon calculateur de réduction", "orig": "Prix d'origine", "rem": "Remise", "defi": "🎯 Défi Hacker", "score": "Points", "check": "Vérifier", "win": "✅ BRAVO !", "lost": "❌ FAUX !", "visit": "Visiteurs !"}
+    "FR": {"calc": "Mon calculateur de réduction", "orig": "Prix d'origine", "rem": "Remise", "total": "Total", "defi": "🎯 Défi Hacker", "score": "Score"},
+    "AR": {"calc": "حاسبة الخصم", "orig": "السعر الأصلي", "rem": "خصم", "total": "المجموع", "defi": "🎯 تحدي الهكر", "score": "نتيجة"},
+    "EN": {"calc": "My Calculator", "orig": "Original Price", "rem": "Discount", "total": "Total", "defi": "🎯 Hacker Challenge", "score": "Score"}
 }
 
-# --- CERVEAU IA ILLIMITÉ (RÉPOND À TOUT COMME UN GOAT) ---
+# --- CERVEAU IA (RÉPOND À TOUT) ---
 def cerveau_ia_goat(question):
     q = question.lower().strip()
     
-    # 1. Réponse aux signes ( . ? ! )
-    if q in [".", "?", "!"]: return "Même un signe a du style ici ! Pose-moi une vraie question, je suis prêt. 😎"
+    # 1. Identité et patron
+    if "qui" in q and "cree" in q: return "Le GOAT absolu c'est **Règne** ! 👑"
+    if "goat" in q: return "Le seul patron ici c'est **Règne**. 😎"
     
-    # 2. Salutations et politesse
-    if any(s in q for s in ["wesh", "wsh", "bien ou quoi"]): return "Wesh ! Bien ou quoi ? Je suis l'IA de **Règne**, on gère le système ensemble. 🤝"
-    if any(s in q for s in ["salut", "bonjour", "hello", "sava", "ça va"]): return "Salut ! Je vais super bien, boosté à l'énergie de **Règne**. Et toi ? 😊"
-    if "merci" in q: return "Normal ! Entre légendes, on s'entraide. 😉"
+    # 2. Capitales (Dictionnaire étendu)
+    caps = {
+        "allemagne": "Berlin 🇩🇪", "belgique": "Bruxelles 🇧🇪", "france": "Paris 🇫🇷",
+        "maroc": "Rabat 🇲🇦", "espagne": "Madrid 🇪🇸", "italie": "Rome 🇮🇹",
+        "australie": "Canberra 🇦🇺", "portugal": "Lisbonne 🇵🇹"
+    }
+    for pays, cap in caps.items():
+        if pays in q: return f"La capitale c'est **{cap}**."
 
-    # 3. Calculs directs (1+1, 5*5, etc.)
-    if re.search(r'\d+', q) and any(op in q for op in ['+', '-', '*', '/']):
+    # 3. Calculs directs (ex: 1+1)
+    if re.search(r'\d+', q):
         try:
-            calcul = "".join(re.findall(r'[0-9\+\-\*\/\.]', q))
-            return f"Après analyse : **{calcul} = {eval(calcul)}**. Trop facile ! 🧠"
+            expr = "".join(re.findall(r'[0-9\+\-\*\/\.]', q))
+            return f"Calcul fait : **{eval(expr)}**. Facile pour l'IA de Règne ! 🧠"
         except: pass
 
-    # 4. Culture G (Capitales, Définitions)
-    if "bonbon" in q: return "Le bonbon est une confiserie sucrée. Miam, mais attention aux dents ! 🍬"
-    if "qui" in q and "cree" in q: return "Le seul et unique créateur, c'est le GOAT **Règne**. 👑"
-    if "australie" in q: return "La capitale c'est **Canberra** 🇦🇺 !"
-    if "belgique" in q: return "La capitale c'est **Bruxelles** 🇧🇪 !"
+    # 4. Politesse
+    if any(s in q for s in ["wesh", "salut", "bonjour", "hello"]):
+        return "Wesh ! Bien ou quoi ? Je réponds à TOUT maintenant. Pose ta question."
+    if "ca va" in q or "ça va" in q:
+        return "Je pète la forme numérique ! Et toi ?"
 
-    # 5. Réponse Libre (Si l'IA ne sait pas, elle discute vraiment)
-    return f"Franchement, ta question sur '{question}' est super stylée. En tant qu'IA, je trouve ça fascinant. Dis-m'en plus ! 😉"
+    return f"Pour '{question}', je dirais que c'est captivant. Demande à **Règne**, il a toutes les réponses ! 😉"
 
 # --- INTERFACE ---
 col_main, col_lang = st.columns([0.8, 0.2])
 
 with col_lang:
-    # Menu des pays qui traduit TOUT le site
-    choix_pays = st.selectbox("🌐 Pays / Language", list(LANGS.keys()))
-    T = LANGS[choix_pays]
+    choix = st.selectbox("🌐 Tous les Pays", tous_les_pays)
+    T = LANGS["AR"] if any(f in choix for f in ["🇲🇦", "🇸🇦", "🇩🇿"]) else LANGS["FR"]
 
 with st.sidebar:
     st.title("🤖 Chatbot 1CA")
-    st.write(f"Assistant du GOAT : **Règne**")
-    if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "Wesh ! Pose-moi n'importe quelle question, je réponds à TOUT."}]
+    st.write("Assistant de **Règne**")
+    if "messages" not in st.session_state: st.session_state.messages = []
     for m in st.session_state.messages:
         with st.chat_message(m["role"]): st.markdown(m["content"])
-    if prompt := st.chat_input("Demande-moi n'importe quoi..."):
+    if prompt := st.chat_input("Écris-moi..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"): st.markdown(prompt)
         rep = cerveau_ia_goat(prompt)
@@ -69,51 +73,22 @@ with st.sidebar:
         st.session_state.messages.append({"role": "assistant", "content": rep})
 
 with col_main:
-    # LOGO ET TITRES
-    try: st.image("IMG_0956.png", width=120)
+    try: st.image("IMG_0956.png", width=130)
     except: st.info("Logo Hacker Cosmic")
-    
     st.header(T["calc"])
     st.title("Hacker Cosmic 1CA 2026")
-    st.markdown("### Créé par **Règne**")
+    st.subheader(f"Créé par Règne")
     st.write("---")
-
-    # CALCULATEUR
-    p_orig = st.number_input(T["orig"], value=460.0)
-    remise = st.number_input(T["rem"], value=10.0)
-    st.header(f"{T['total']} : {p_orig * (1 - remise/100):.2f} €")
+    
+    prix = st.number_input(T["orig"], value=460.0)
+    rem = st.number_input(T["rem"], value=10.0)
+    st.header(f"{T['total']} : {prix * (1 - rem/100):.2f} €")
     
     st.write("---")
-
-    # DÉFI HACKER (L'EXERCICE AVEC SCORE)
     st.header(T["defi"])
     if 'score' not in st.session_state: st.session_state.score = 0
-    if 'ex_p' not in st.session_state:
-        st.session_state.ex_p = random.randint(10, 500)
-        st.session_state.ex_r = random.randint(5, 50)
-        st.session_state.sol = st.session_state.ex_p * (1 - st.session_state.ex_r / 100)
-
-    st.write(f"**{T['score']} : {st.session_state.score} ⭐**")
-    st.write(f"DÉFI : {st.session_state.ex_p}€ avec {st.session_state.ex_r}% de remise.")
-    ans = st.number_input(T["check"], key="ans_input", value=0.0)
+    st.write(f"**Score : {st.session_state.score} ⭐**")
     
-    c1, c2 = st.columns(2)
-    with c1:
-        if st.button(T["check"]):
-            if abs(ans - st.session_state.sol) < 0.1:
-                st.success(T["win"])
-                st.session_state.score += 1
-                del st.session_state['ex_p']
-                st.rerun()
-            else:
-                st.error(f"{T['lost']} (Réponse: {st.session_state.sol:.2f}€)")
-                st.session_state.score = 0
-    with c2:
-        if st.button("🔄"):
-            del st.session_state['ex_p']
-            st.rerun()
-
-    # COMPTEUR DE VISITES
     if 'v' not in st.session_state: st.session_state.v = 15
     st.session_state.v += 1
-    st.write(f"🔥 **{st.session_state.v} {T['visit']}**")
+    st.write(f"🔥 **{st.session_state.v} Visiteurs**")
