@@ -5,9 +5,8 @@ import re
 # 1. Configuration GOAT
 st.set_page_config(page_title="Hacker Cosmic 1CA 2026", layout="wide")
 
-# --- LISTE DE TOUS LES PAYS DU MONDE (195+) ---
-# Cette liste contient les nations officielles reconnues mondialement
-pays_monde = [
+# --- LISTE GÉANTE DE TOUS LES PAYS DU MONDE (195) ---
+tous_les_pays = [
     "🇦🇫 Afghanistan", "🇿🇦 Afrique du Sud", "🇦🇱 Albanie", "🇩🇿 Algérie", "🇩🇪 Allemagne", "🇦🇩 Andorre", "🇦🇴 Angola", "🇦🇮 Anguilla", "🇦🇬 Antigua-et-Barbuda", "🇸🇦 Arabie Saoudite", "🇦🇷 Argentine", "🇦🇲 Arménie", "🇦🇺 Australie", "🇦🇹 Autriche", "🇦🇿 Azerbaïdjan", 
     "🇧🇸 Bahamas", "🇧🇭 Bahreïn", "🇧🇩 Bangladesh", "🇧🇧 Barbade", "🇧🇪 Belgique", "🇧🇿 Belize", "🇧🇯 Bénin", "🇧🇹 Bhoutan", "🇧🇾 Biélorussie", "🇧🇲 Bermudes", "🇧🇴 Bolivie", "🇧🇦 Bosnie-Herzégovine", "🇧🇼 Botswana", "🇧🇷 Brésil", "🇧🇳 Brunei", "🇧🇬 Bulgarie", "🇧🇫 Burkina Faso", "🇧🇮 Burundi", 
     "🇰🇭 Cambodge", "🇨🇲 Cameroun", "🇨🇦 Canada", "🇨🇻 Cap-Vert", "🇨🇱 Chili", "🇨🇳 Chine", "🇨🇾 Chypre", "🇨🇴 Colombie", "🇰🇲 Comores", "🇨🇬 Congo", "🇨🇩 Congo (RDC)", "🇰🇷 Corée du Sud", "🇰🇵 Corée du Nord", "🇨🇷 Costa Rica", "🇨🇮 Côte d'Ivoire", "🇭🇷 Croatie", "🇨🇺 Cuba", 
@@ -30,56 +29,40 @@ pays_monde = [
     "🇹🇯 Tadjikistan", "🇹🇿 Tanzanie", "🇹🇩 Tchad", "🇹🇭 Thaïlande", "🇹🇱 Timor oriental", "🇹🇬 Togo", "🇹🇴 Tonga", "🇹🇹 Trinité-et-Tobago", "🇹🇳 Tunisie", "🇹🇲 Turkménistan", "🇹🇷 Turquie", "🇹🇻 Tuvalu", 
     "🇺🇦 Ukraine", "🇺🇾 Uruguay", 
     "🇻🇺 Vanuatu", "🇻🇦 Vatican", "🇻🇪 Venezuela", "🇻🇳 Vietnam", 
-    "🇾🇪 Yémen", 
-    "🇿🇲 Zambie", "🇿🇼 Zimbabwe"
+    "🇾🇪 Yémen", "🇿🇲 Zambie", "🇿🇼 Zimbabwe"
 ]
 
-# --- CERVEAU IA ILLIMITÉ (STYLE GOAT) ---
+# --- CERVEAU IA ILLIMITÉ (RÉPOND À TOUT COMME UN POTE) ---
 def cerveau_ia_ultime(question):
     q = question.lower().strip()
     
-    # 1. IDENTITÉ
-    if "qui" in q and ("es" in q or "tes" in q):
-        return "Je suis l'IA illimitée de **Règne**. Je connais tout ce qui existe !"
-    if "cree" in q or "créé" in q:
-        return "Tout ce système a été conçu par le seul et unique GOAT : **Règne**. 👑"
-
-    # 2. CALCULS COMPLEXES
+    # 1. Calculs
     if re.search(r'\d+', q) and any(op in q for op in ['+', '-', '*', '/']):
         try:
-            calcul = "".join(re.findall(r'[0-9\+\-\*\/\.]', q))
-            return f"Après analyse, **{calcul} = {eval(calcul)}**. Trop simple pour moi ! 😎"
+            res = eval("".join(re.findall(r'[0-9\+\-\*\/\.]', q)))
+            return f"Facile ! Ça fait **{res}**. Règne m'a rendu trop fort. 😎"
         except: pass
 
-    # 3. RÉPONSE À TOUT (Culture, Science, Vie)
-    # Le chatbot analyse les mots clés pour répondre précisément
-    if "bonbon" in q: return "Un bonbon est une sucrerie. Miam ! Mais attention aux dents. 🍬"
-    if "belgique" in q: return "La capitale est **Bruxelles** 🇧🇪."
-    if "maroc" in q: return "La capitale est **Rabat** 🇲🇦."
-    if "france" in q: return "C'est **Paris** 🇫🇷."
-    if "pays" in q and "combien" in q: return "Il y a officiellement **195 pays** reconnus par l'ONU. 🌍"
+    # 2. Réponses directes (Wesh, Bonbon, Capitales)
+    if "wesh" in q: return "Wesh ! Bien ou quoi ? Je suis l'IA de **Règne**, on est ensemble. 🤝"
+    if "bonbon" in q: return "C'est une sucrerie délicieuse, mais attention à tes dents de hacker ! 🍬"
+    if "qui" in q and "cree" in q: return "C'est le seul et unique **Règne** le GOAT ! 👑"
+    if "capital" in q and "australie" in q: return "La capitale c'est **Canberra** 🇦🇺 !"
+    if "capital" in q and "belgique" in q: return "C'est **Bruxelles** 🇧🇪 !"
     
-    # 4. SALUTATIONS NATURELLES
-    if q in ["salut", "bonjour", "wesh", "merhaba"]: 
-        return "Salut ! Je suis l'IA de Règne. Je réponds à TOUT. Pose ta question."
-    if "ca va" in q or "ça va" in q:
-        return "Tranquille, je pète la forme numérique ! Et toi, prêt à hacker les maths ?"
+    # 3. Politesse
+    if q in ["salut", "bonjour", "hello"]: return "Salut ! Quoi de neuf aujourd'hui ?"
+    if "ça va" in q or "sava" in q: return "Tranquille, je pète la forme numérique ! Et toi ?"
 
-    # 5. MODE RECHERCHE INFINIE (Si l'IA ne connaît pas par cœur)
-    return f"Ta question sur '{question}' est excellente. En tant qu'IA de **Règne**, je dirais que c'est un sujet fascinant. Tu veux que j'approfondisse ?"
+    # 4. Si elle ne sait pas, elle répond avec style
+    return f"Franchement, '{question}' c'est une bonne question. En vrai, demande à **Règne**, c'est lui le patron ! 😉"
 
 # --- INTERFACE ---
-col_main, col_lang = st.columns([0.8, 0.2])
-
-with col_lang:
-    # Menu avec tous les pays du monde
-    st.selectbox("🌐 Tous les Pays", pays_monde)
-
 with st.sidebar:
     st.title("🤖 Chatbot 1CA")
-    st.write("Assistant du GOAT : **Règne**")
+    st.write("Assistant de **Règne**")
     if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "Wesh ! Pose-moi n'importe quelle question, je réponds direct."}]
+        st.session_state.messages = [{"role": "assistant", "content": "Wesh ! Pose ta question, je réponds à tout."}]
     for m in st.session_state.messages:
         with st.chat_message(m["role"]): st.markdown(m["content"])
     if prompt := st.chat_input("Demande-moi n'importe quoi..."):
@@ -89,23 +72,57 @@ with st.sidebar:
         with st.chat_message("assistant"): st.markdown(rep)
         st.session_state.messages.append({"role": "assistant", "content": rep})
 
+# --- CORPS PRINCIPAL ---
+col_main, col_lang = st.columns([0.8, 0.2])
+
+with col_lang:
+    st.selectbox("🌐 Tous les Pays", tous_les_pays)
+
 with col_main:
-    # Ton logo IMG_0956.png
     try: st.image("IMG_0956.png", width=120)
     except: st.info("Logo Hacker Cosmic")
     
+    st.header("Mon calculateur de réduction")
     st.title("Hacker Cosmic 1CA 2026")
     st.markdown("### Créé par **Règne**")
     st.write("---")
 
-    # CALCULATEUR
-    p = st.number_input("Prix d'origine (€)", value=460.0)
-    r = st.number_input("Remise (%)", value=10.0)
-    st.header(f"Total : {p * (1 - r/100):.2f} €")
+    # Calculateur
+    p_orig = st.number_input("Prix d'origine (€)", value=460.0)
+    remise = st.number_input("Remise (%)", value=10.0)
+    st.header(f"Total : {p_orig * (1 - remise/100):.2f} €")
     
     st.write("---")
+
+    # DÉFI DU HACKER (EXERCICE)
+    st.header("🎯 Défi du Hacker")
+    if 'score' not in st.session_state: st.session_state.score = 0
+    if 'ex_p' not in st.session_state:
+        st.session_state.ex_p = random.randint(10, 500)
+        st.session_state.ex_r = random.randint(5, 50)
+        st.session_state.sol = st.session_state.ex_p * (1 - st.session_state.ex_r / 100)
+
+    st.write(f"**Score actuel : {st.session_state.score} ⭐**")
+    st.write(f"Trouve le prix final : **{st.session_state.ex_p}€** avec **{st.session_state.ex_r}%** de remise.")
+    ans = st.number_input("Ta réponse (€) :", key="ans_input")
     
-    # COMPTEUR DE VISITES (GOAT Analytics)
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button("Vérifier"):
+            if abs(ans - st.session_state.sol) < 0.1:
+                st.success("✅ GAGNÉ ! +1 Point")
+                st.session_state.score += 1
+                del st.session_state['ex_p']
+                st.rerun()
+            else:
+                st.error(f"❌ FAUX ! C'était {st.session_state.sol:.2f}€")
+                st.session_state.score = 0
+    with c2:
+        if st.button("Nouveau Défi 🔄"):
+            del st.session_state['ex_p']
+            st.rerun()
+
+    # Compteur
     if 'v' not in st.session_state: st.session_state.v = 11
     st.session_state.v += 1
     st.write(f"🔥 **{st.session_state.v} Hackers** ont visité ce site !")
