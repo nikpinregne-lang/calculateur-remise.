@@ -2,110 +2,139 @@ import streamlit as st
 import random
 import re
 
-# 1. Configuration GOAT
+# 1. Configuration et Style
 st.set_page_config(page_title="Hacker Cosmic 1CA 2026", layout="wide")
 
-# --- DICTIONNAIRE DE TRADUCTION ET PAYS (195 Pays) ---
-# J'ai configuré les langues principales. Les autres pays utiliseront l'anglais par défaut.
-lang_data = {
-    "Français": {"calc": "Mon calculateur de réduction", "orig": "Prix d'origine (€)", "rem": "Remise (%)", "defi": "🎯 Défi du Hacker", "score": "Score actuel", "win": "✅ GAGNÉ !", "lost": "❌ FAUX !"},
-    "English": {"calc": "My Discount Calculator", "orig": "Original Price (€)", "rem": "Discount (%)", "defi": "🎯 Hacker Challenge", "score": "Current Score", "win": "✅ WON!", "lost": "❌ WRONG!"},
-    "Español": {"calc": "Mi Calculadora de Descuento", "orig": "Precio original (€)", "rem": "Descuento (%)", "defi": "🎯 Desafío Hacker", "score": "Puntuación", "win": "✅ ¡GANADO!", "lost": "❌ ¡FALSO!"},
-    "العربية": {"calc": "حاسبة الخصم الخاصة بي", "orig": "السعر الأصلي", "rem": "خصم (%)", "defi": "🎯 تحدي الهكر", "score": "النتيجة الحالية", "win": "✅ فزت!", "lost": "❌ خطأ!"}
+# --- SYSTÈME DE TRADUCTION TOTAL ---
+# On définit les textes pour chaque groupe de langues
+LANGS = {
+    "FR": { # Français (France, Maroc, Algérie, etc.)
+        "calc": "Mon calculateur de réduction", "orig": "Prix d'origine (€)", "rem": "Remise (%)", 
+        "total": "Total après réduction", "defi": "🎯 Défi du Hacker", "score": "Score", 
+        "check": "Vérifier", "new": "Nouveau Défi 🔄", "win": "✅ GAGNÉ !", "lost": "❌ FAUX !", "visit": "Hackers ont visité !"
+    },
+    "EN": { # English (USA, UK, Canada, etc.)
+        "calc": "My Discount Calculator", "orig": "Original Price (€)", "rem": "Discount (%)", 
+        "total": "Total after discount", "defi": "🎯 Hacker Challenge", "score": "Score", 
+        "check": "Check", "new": "New Challenge 🔄", "win": "✅ WON!", "lost": "❌ WRONG!", "visit": "Hackers visited!"
+    },
+    "AR": { # Arabe (Arabie Saoudite)
+        "calc": "حاسبة الخصم الخاصة بي", "orig": "السعر الأصلي", "rem": "خصم (%)", 
+        "total": "المجموع بعد الخصم", "defi": "🎯 تحدي الهكر", "score": "نتيجة", 
+        "check": "تحقق", "new": "تحدي جديد 🔄", "win": "✅ فزت!", "lost": "❌ خطأ!", "visit": "هكر زاروا الموقع"
+    },
+    "RO": { # Roumain
+        "calc": "Calculatorul meu de reduceri", "orig": "Preț original (€)", "rem": "Reducere (%)", 
+        "total": "Total după reducere", "defi": "🎯 Provocarea Hackerului", "score": "Scor", 
+        "check": "Verifică", "new": "Provocare Nouă 🔄", "win": "✅ AI CÂȘTIGAT!", "lost": "❌ GREȘIT!", "visit": "Hackeri au vizitat!"
+    }
 }
 
-tous_les_pays = [
-    "🇫🇷 France", "🇲🇦 Maroc", "🇩🇿 Algérie", "🇹🇳 Tunisie", "🇸🇦 Arabie Saoudite", "🇧🇪 Belgique", "🇨🇦 Canada", "🇺🇸 USA", "🇷🇴 Roumanie", "🇺🇦 Ukraine", "🇹🇷 Turquie", "🇵🇹 Portugal", "🇪🇸 Espagne", "🇮🇹 Italie", "🇩🇪 Allemagne", "🇨🇭 Suisse", "🇬🇧 Royaume-Uni", "🇯🇵 Japon", "🇨🇳 Chine", "🇷🇺 Russie"
-    # ... (Tu peux ajouter les 195 ici, la logique reste la même)
+# --- LISTE DES PAYS ---
+pays_complet = [
+    "🇫🇷 France", "🇲🇦 Maroc", "🇩🇿 Algérie", "🇸🇦 Arabie Saoudite", "🇧🇪 Belgique", 
+    "🇷🇴 Roumanie", "🇺🇦 Ukraine", "🇺🇸 USA", "🇨🇦 Canada", "🇹🇷 Turquie"
 ]
 
-# --- CERVEAU IA ILLIMITÉ (RÉPOND À TOUT) ---
-def cerveau_ia_ultime(question):
+# --- CERVEAU IA "COMME MOI" (RÉPOND À TOUT) ---
+def chatbot_goat(question):
     q = question.lower().strip()
     
-    # 1. Calculs (ex: 12*5)
+    # Réponse au point "." ou vide
+    if q == "." or q == "": return "Un point ? C'est le début d'un grand code ! Pose-moi une vraie question, je suis prêt. 😎"
+    
+    # Calculs directs
     if re.search(r'\d+', q) and any(op in q for op in ['+', '-', '*', '/']):
         try:
             res = eval("".join(re.findall(r'[0-9\+\-\*\/\.]', q)))
-            return f"Facile ! Ça fait **{res}**. Règne m'a donné un cerveau de génie. 😎"
+            return f"Calcul rapide : **{res}**. Trop facile pour l'IA de Règne ! 🧠"
         except: pass
 
-    # 2. Réponses "Style Pote" (Wesh, etc.)
-    if "wesh" in q or "wsh" in q: return "Wesh ! Bien ou quoi ? Je suis l'IA de **Règne**, on est ensemble. 🤝"
-    if "bonbon" in q: return "Une sucrerie délicieuse ! Mais attention à tes dents de hacker. 🍬"
-    if "qui" in q and "cree" in q: return "C'est le seul et unique **Règne** le GOAT ! 👑"
+    # Personnalité (Wesh, Qui, etc.)
+    if "wesh" in q: return "Wesh ! Bien ou quoi ? Je suis l'IA de **Règne**, on est ensemble. 🤝"
+    if "qui" in q and "cree" in q: return "Le GOAT qui a tout créé ici, c'est **Règne**. 👑"
     if "ça va" in q or "sava" in q: return "Tranquille, je pète la forme numérique ! Et toi ?"
+    if "bonbon" in q: return "Le sucre, c'est la vie, mais les maths c'est mieux ! 🍬"
     
-    # 3. Capitales (Dictionnaire intégré)
-    capitales = {"australie": "Canberra 🇦🇺", "belgique": "Bruxelles 🇧🇪", "france": "Paris 🇫🇷", "maroc": "Rabat 🇲🇦", "turquie": "Ankara 🇹🇷"}
-    for pays, cap in capitales.items():
-        if pays in q: return f"La capitale c'est **{cap}** !"
+    # Capitales
+    caps = {"australie": "Canberra 🇦🇺", "belgique": "Bruxelles 🇧🇪", "france": "Paris 🇫🇷", "maroc": "Rabat 🇲🇦"}
+    for p, c in caps.items():
+        if p in q: return f"La capitale c'est **{c}** !"
 
-    return f"Franchement, '{question}' c'est une bonne question. En vrai, demande à **Règne**, c'est lui le patron ! 😉"
+    # Réponse "Libre"
+    return f"Franchement, ta question sur '{question}' est stylée. En tant qu'IA, je dirais que c'est un truc de génie. Tu en penses quoi, toi ?"
 
 # --- INTERFACE ---
-# Menu des pays à droite
 col_main, col_lang = st.columns([0.8, 0.2])
 
 with col_lang:
-    choix_pays = st.selectbox("🌐 Tous les Pays", tous_les_pays)
-    # Détection de la langue selon le drapeau
-    if "🇫🇷" in choix_pays or "🇲🇦" in choix_pays or "🇩🇿" in choix_pays or "🇹🇳" in choix_pays: L = lang_data["Français"]
-    elif "🇸🇦" in choix_pays: L = lang_data["العربية"]
-    elif "🇪🇸" in choix_pays: L = lang_data["Español"]
-    else: L = lang_data["English"]
+    # Choix du pays
+    choix = st.selectbox("🌐 Pays / Language", pays_complet)
+    # Logique pour changer la langue des textes
+    if "🇫🇷" in choix or "🇲🇦" in choix or "🇩🇿" in choix or "🇧🇪" in choix: T = LANGS["FR"]
+    elif "🇸🇦" in choix: T = LANGS["AR"]
+    elif "🇷🇴" in choix: T = LANGS["RO"]
+    else: T = LANGS["EN"]
 
 with st.sidebar:
     st.title("🤖 Chatbot 1CA")
     st.write("Assistant de **Règne**")
     if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "Wesh ! Pose ta question, je réponds à tout."}]
+        st.session_state.messages = [{"role": "assistant", "content": "Wesh ! Je réponds à TOUT. Même à un seul point !"}]
     for m in st.session_state.messages:
         with st.chat_message(m["role"]): st.markdown(m["content"])
     if prompt := st.chat_input("Demande-moi n'importe quoi..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"): st.markdown(prompt)
-        rep = cerveau_ia_ultime(prompt)
+        rep = chatbot_goat(prompt)
         with st.chat_message("assistant"): st.markdown(rep)
         st.session_state.messages.append({"role": "assistant", "content": rep})
 
 with col_main:
-    st.image("IMG_0956.png", width=120)
-    st.header(L["calc"])
+    try: st.image("IMG_0956.png", width=120)
+    except: st.info("Logo Hacker Cosmic")
+    
+    st.header(T["calc"])
     st.title("Hacker Cosmic 1CA 2026")
-    st.markdown("### Créé par **Règne**")
+    st.markdown(f"### Créé par **Règne**")
     st.write("---")
 
-    # Calculateur
-    p_orig = st.number_input(L["orig"], value=460.0)
-    remise = st.number_input(L["rem"], value=10.0)
-    st.header(f"Total : {p_orig * (1 - remise/100):.2f} €")
+    # CALCULATEUR
+    p_orig = st.number_input(T["orig"], value=460.0)
+    remise = st.number_input(T["rem"], value=10.0)
+    st.header(f"{T['total']} : {p_orig * (1 - remise/100):.2f} €")
     
     st.write("---")
 
-    # DÉFI DU HACKER
-    st.header(L["defi"])
+    # DÉFI (EXERCICE)
+    st.header(T["defi"])
     if 'score' not in st.session_state: st.session_state.score = 0
     if 'ex_p' not in st.session_state:
         st.session_state.ex_p = random.randint(10, 500)
         st.session_state.ex_r = random.randint(5, 50)
         st.session_state.sol = st.session_state.ex_p * (1 - st.session_state.ex_r / 100)
 
-    st.write(f"**{L['score']} : {st.session_state.score} ⭐**")
-    st.write(f"{st.session_state.ex_p}€ avec {st.session_state.ex_r}% de remise.")
-    ans = st.number_input("Ta réponse (€) :", key="ans_input")
+    st.write(f"**{T['score']} : {st.session_state.score} ⭐**")
+    st.write(f"{st.session_state.ex_p}€ avec {st.session_state.ex_r}% {T['rem']}")
+    ans = st.number_input(T["check"], key="ans_input", value=0.0)
     
-    if st.button(L["calc"].split()[0]): # Bouton de validation
-        if abs(ans - st.session_state.sol) < 0.1:
-            st.success(L["win"])
-            st.session_state.score += 1
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button(T["check"]):
+            if abs(ans - st.session_state.sol) < 0.1:
+                st.success(T["win"])
+                st.session_state.score += 1
+                del st.session_state['ex_p']
+                st.rerun()
+            else:
+                st.error(f"{T['lost']} ({st.session_state.sol:.2f}€)")
+                st.session_state.score = 0
+    with c2:
+        if st.button(T["new"]):
             del st.session_state['ex_p']
             st.rerun()
-        else:
-            st.error(f"{L['lost']} ({st.session_state.sol:.2f}€)")
-            st.session_state.score = 0
 
-    # Compteur de visites
+    # COMPTEUR
     if 'v' not in st.session_state: st.session_state.v = 11
     st.session_state.v += 1
-    st.write(f"🔥 **{st.session_state.v} Hackers** ont visité ce site !")
+    st.write(f"🔥 **{st.session_state.v} {T['visit']}**")
