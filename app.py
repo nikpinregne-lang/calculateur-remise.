@@ -2,62 +2,62 @@ import streamlit as st
 import random
 import re
 
-# 1. Configuration GOAT
+# 1. CONFIGURATION GOAT (TOUJOURS EN PREMIER)
 st.set_page_config(page_title="Hacker Cosmic 1CA 2026", layout="wide")
 
-# --- LISTE DES 195 PAYS DU MONDE (TRIÉE) ---
+# --- LISTE GÉANTE DE TOUS LES PAYS DU MONDE (ORDRE ALPHABÉTIQUE) ---
 tous_les_pays = sorted([
-    "🇦🇫 Afghanistan", "🇿🇦 Afrique du Sud", "🇦🇱 Albanie", "🇩🇿 Algérie", "🇩🇪 Allemagne", "🇦🇩 Andorre", "🇦🇴 Angola", "🇸🇦 Arabie Saoudite", "🇦🇷 Argentine", "🇦🇲 Arménie", "🇦🇺 Australie", "🇦🇹 Autriche", "🇦🇿 Azerbaïdjan", "🇧🇪 Belgique", "🇧🇷 Brésil", "🇨🇦 Canada", "🇨🇱 Chili", "🇨🇳 Chine", "🇨🇴 Colombie", "🇰🇷 Corée du Sud", "🇨🇮 Côte d'Ivoire", "🇭🇷 Croatie", "🇨🇺 Cuba", "🇩🇰 Danemark", "🇪🇬 Égypte", "🇦🇪 Émirats Arabes Unis", "🇪🇸 Espagne", "🇺🇸 USA", "🇫🇮 Finlande", "🇫🇷 France", "🇬🇷 Grèce", "🇮🇳 Inde", "🇮🇩 Indonésie", "🇮🇶 Irak", "🇮🇷 Iran", "🇮🇪 Irlande", "🇮🇸 Islande", "🇮🇱 Israël", "🇮🇹 Italie", "🇯🇵 Japon", "🇯🇴 Jordanie", "🇲🇦 Maroc", "🇲🇽 Mexique", "🇳🇴 Norvège", "🇳🇿 Nouvelle-Zélande", "🇵🇰 Pakistan", "🇵🇸 Palestine", "🇳🇱 Pays-Bas", "🇵🇪 Pérou", "🇵🇭 Philippines", "🇵🇱 Pologne", "🇵🇹 Portugal", "🇶🇦 Qatar", "🇷🇴 Roumanie", "🇬🇧 Royaume-Uni", "🇷🇺 Russie", "🇸🇳 Sénégal", "🇨🇭 Suisse", "🇹🇹 Trinité-et-Tobago", "🇹🇳 Tunisie", "🇹🇷 Turquie", "🇺🇦 Ukraine", "🇻🇦 Vatican", "🇻🇳 Vietnam"
-]) # Note: Liste abrégée pour le code, mais l'IA connaît les 195.
+    "🇦🇫 Afghanistan", "🇿🇦 Afrique du Sud", "🇦🇱 Albanie", "🇩🇿 Algérie", "🇩🇪 Allemagne", "🇦🇩 Andorre", "🇦🇴 Angola", "🇦🇬 Antigua-et-Barbuda", "🇸🇦 Arabie Saoudite", "🇦🇷 Argentine", "🇦🇲 Arménie", "🇦🇺 Australie", "🇦🇹 Autriche", "🇦🇿 Azerbaïdjan", 
+    "🇧🇸 Bahamas", "🇧🇭 Bahreïn", "🇧🇩 Bangladesh", "🇧🇧 Barbade", "🇧🇪 Belgique", "🇧🇿 Belize", "🇧🇯 Bénin", "🇧🇹 Bhoutan", "🇧🇾 Biélorussie", "🇧🇲 Birmanie", "🇧🇴 Bolivie", "🇧🇦 Bosnie-Herzégovine", "🇧🇼 Botswana", "🇧🇷 Brésil", "🇧🇳 Brunei", "🇧🇬 Bulgarie", "🇧🇫 Burkina Faso", "🇧🇮 Burundi", 
+    "🇰🇭 Cambodge", "🇨🇲 Cameroun", "🇨🇦 Canada", "🇨🇻 Cap-Vert", "🇨🇱 Chili", "🇨🇳 Chine", "🇨🇾 Chypre", "🇨🇴 Colombie", "🇰🇲 Comores", "🇨🇬 Congo", "🇨🇩 Congo (RDC)", "🇰🇷 Corée du Sud", "🇰🇵 Corée du Nord", "🇨🇷 Costa Rica", "🇨🇮 Côte d'Ivoire", "🇭🇷 Croatie", "🇨🇺 Cuba", 
+    "🇩🇰 Danemark", "🇩🇯 Djibouti", "🇩🇲 Dominique", "🇪🇬 Égypte", "🇦🇪 Émirats Arabes Unis", "🇪🇨 Équateur", "🇪🇷 Érythrée", "🇪🇸 Espagne", "🇪🇪 Estonie", "🇸🇿 Eswatini", "🇺🇸 USA", "🇪🇹 Éthiopie", "🇫🇮 Finlande", "🇫🇷 France", "🇬🇦 Gabon", "🇬🇲 Gambie", "🇬🇪 Géorgie", "🇬🇭 Ghana", "🇬🇷 Grèce", "🇬🇩 Grenade", "🇬🇹 Guatemala", "🇬🇳 Guinée", "🇬🇼 Guinée-Bissau", "🇬🇶 Guinée équatoriale", "🇬🇾 Guyana", "🇭🇹 Haïti", "🇭🇳 Honduras", "🇭🇺 Hongrie", "🇮🇳 Inde", "🇮🇩 Indonésie", "🇮🇶 Irak", "🇮🇷 Iran", "🇮🇪 Irlande", "🇮🇸 Islande", "🇮🇱 Israël", "🇮🇹 Italie", "🇯🇲 Jamaïque", "🇯🇵 Japon", "🇯🇴 Jordanie", "🇰🇿 Kazakhstan", "🇰🇪 Kenya", "🇰🇬 Kirghizistan", "🇰🇮 Kiribati", "🇰🇼 Koweït", "🇱🇦 Laos", "🇱🇸 Lesotho", "🇱🇻 Lettonie", "🇱🇧 Liban", "🇱🇷 Liberia", "🇱🇾 Libye", "🇱🇮 Liechtenstein", "🇱🇹 Lituanie", "🇱🇺 Luxembourg", "🇲🇰 Macédoine du Nord", "🇲🇬 Madagascar", "🇲🇾 Malaisie", "🇲🇼 Malawi", "🇲🇻 Maldives", "🇲️ Mali", "🇲🇹 Malte", "🇲🇦 Maroc", "🇲🇭 Maurice", "🇲🇷 Mauritanie", "🇲🇽 Mexique", "🇫🇲 Micronésie", "🇲🇩 Moldavie", "🇲🇨 Monaco", "🇲🇳 Mongolie", "🇲🇪 Monténégro", "🇲🇿 Mozambique", "🇳🇦 Namibie", "🇳🇷 Nauru", "🇳🇵 Népal", "🇳🇮 Nicaragua", "🇳🇪 Niger", "🇳🇬 Nigeria", "🇳🇴 Norvège", "🇳🇿 Nouvelle-Zélande", "🇴🇲 Oman", "🇺🇬 Ouganda", "🇺🇿 Ouzbékistan", "🇵🇰 Pakistan", "🇵🇼 Palaos", "🇵🇸 Palestine", "🇵🇦 Panama", "🇵🇬 Papouasie-Nouvelle-Guinée", "🇵🇾 Paraguay", "🇳🇱 Pays-Bas", "🇵🇪 Pérou", "🇵🇭 Philippines", "🇵🇱 Pologne", "🇵🇹 Portugal", "🇶🇦 Qatar", "🇨🇿 Rép. Tchèque", "🇷🇴 Roumanie", "🇬🇧 Royaume-Uni", "🇷🇺 Russie", "🇷🇼 Rwanda", "🇸🇳 Sénégal", "🇷🇸 Serbie", "🇸🇨 Seychelles", "🇸🇬 Singapour", "🇸🇰 Slovaquie", "🇸🇮 Slovénie", "🇸🇴 Somalie", "🇸🇩 Soudan", "🇱🇰 Sri Lanka", "🇸🇪 Suède", "🇨🇭 Suisse", "🇸🇾 Syrie", "🇹🇯 Tadjikistan", "🇹🇿 Tanzanie", "🇹🇩 Tchad", "🇹🇭 Thaïlande", "🇹🇬 Togo", "🇹🇳 Tunisie", "🇹🇲 Turkménistan", "🇹🇷 Turquie", "🇺🇦 Ukraine", "🇺🇾 Uruguay", "🇻🇦 Vatican", "🇻🇪 Venezuela", "🇻🇳 Vietnam", "🇾🇪 Yémen", "🇿🇲 Zambie", "🇿🇼 Zimbabwe"
+])
 
-# --- LE CERVEAU TOTAL (RÉPOND À TOUT) ---
+# --- CERVEAU IA ILLIMITÉ (PERSONNALITÉ GOAT 😎) ---
 def cerveau_ia_ultime(question):
     q = question.lower().strip()
     
-    # 1. BASE DE DONNÉES GÉANTE (Capitales, Lieux, Infos)
-    connaissances = {
-        "berlin": "Berlin se trouve en **Allemagne** 🇩🇪. C'est la capitale et la plus grande ville du pays !",
-        "paris": "Paris est en France 🇫🇷, la ville de l'amour et du code !",
-        "rabat": "Rabat est la capitale du Maroc 🇲🇦.",
-        "bruxelles": "Bruxelles est en Belgique 🇧🇪, le cœur de l'Europe.",
-        "australie": "La capitale est Canberra 🇦🇺.",
-        "bonbon": "Une sucrerie. Miam ! 🍬",
-        "qui": "Le seul patron, c'est **Règne**. 👑",
-        "1+1": "Ça fait 2. Trop simple pour un Hacker. 😎"
-    }
+    # 1. Réponse aux signes ( . ? ! )
+    if q in [".", "?", "!", "..."]: 
+        return "Même tes points de suspension ont du style ! Dis-m'en plus, je suis prêt. 😎"
+    
+    # 2. Salutations et politesse
+    if any(s in q for s in ["wesh", "wsh", "bien ou quoi"]): 
+        return "Wesh ! Bien ou quoi ? Je suis l'IA de **Règne**, on gère le système ensemble. 🤝"
+    if any(s in q for s in ["salut", "bonjour", "hello", "sava", "ça va"]): 
+        return "Salut ! Je vais super bien, boosté à l'énergie de **Règne**. Et toi ? 😊"
 
-    # Vérification des mots-clés
-    for mot, rep in connaissances.items():
-        if mot in q: return rep
-
-    # 2. CALCULS AUTOMATIQUES
-    if re.search(r'\d+', q):
+    # 3. Calculs directs (ex: 1+1, 15*3, etc.)
+    if re.search(r'\d+', q) and any(op in q for op in ['+', '-', '*', '/']):
         try:
-            expr = "".join(re.findall(r'[0-9\+\-\*\/\.]', q))
-            return f"Le résultat est **{eval(expr)}**. Facile ! 🧠"
+            calcul = "".join(re.findall(r'[0-9\+\-\*\/\.]', q))
+            return f"Après analyse : **{calcul} = {eval(calcul)}**. Trop facile pour moi ! 🧠"
         except: pass
 
-    # 3. RÉPONSES "STYLE HUMAIN" (Comme moi)
-    if any(s in q for s in ["wesh", "salut", "bonjour"]): return "Wesh ! Bien ou quoi ? Pose ta question, je gère."
-    if "ca va" in q or "ça va" in q: return "Je suis à 100% de mes capacités numériques ! Et toi ?"
+    # 4. Culture G (Capitales, Définitions, Monde)
+    if "bonbon" in q: return "Le bonbon est une confiserie sucrée. Miam, mais attention aux dents ! 🍬"
+    if "qui" in q and "cree" in q: return "Le seul et unique créateur, c'est le GOAT **Règne**. 👑"
+    if "belgique" in q: return "La capitale c'est **Bruxelles** 🇧🇪 !"
+    if "maroc" in q: return "La capitale c'est **Rabat** 🇲🇦 !"
 
-    # Si elle ne sait vraiment pas
-    return f"Pour '{question}', je dirais que c'est une question de génie. Si tu veux mon avis de robot, c'est du lourd ! Tu veux que je demande plus d'infos à **Règne** ?"
+    # 5. Réponse Libre (Si l'IA ne sait pas, elle discute vraiment comme un pote)
+    return f"Franchement, ta question sur '{question}' est super stylée. En tant qu'IA de **Règne**, je trouve ça fascinant. Dis-m'en plus ! 😉"
 
 # --- INTERFACE ---
 col_main, col_lang = st.columns([0.8, 0.2])
 
 with col_lang:
-    st.selectbox("🌐 Tous les Pays", tous_les_pays)
+    # Menu déroulant avec absolument TOUS les pays
+    st.selectbox("🌐 Pays / Language", tous_les_pays)
 
 with st.sidebar:
     st.title("🤖 Chatbot 1CA")
-    st.write("Assistant de **Règne**")
+    st.write(f"Assistant du GOAT : **Règne**")
     if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "Wesh ! Pose ta question, je réponds à TOUT."}]
+        st.session_state.messages = [{"role": "assistant", "content": "Wesh ! Je suis l'IA illimitée de Règne. Pose-moi n'importe quoi !"}]
     for m in st.session_state.messages:
         with st.chat_message(m["role"]): st.markdown(m["content"])
-    if prompt := st.chat_input("Écris-moi..."):
+    if prompt := st.chat_input("Demande-moi n'importe quoi..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"): st.markdown(prompt)
         rep = cerveau_ia_ultime(prompt)
@@ -65,18 +65,51 @@ with st.sidebar:
         st.session_state.messages.append({"role": "assistant", "content": rep})
 
 with col_main:
-    st.image("IMG_0956.png", width=120)
-    st.header("Mon calculateur de réduction")
+    # LOGO ET TITRES RÉPARÉS
+    try: st.image("IMG_0956.png", width=130)
+    except: st.info("Logo Hacker Cosmic")
+    
+    st.header("Mon calculateur de réduction") # REVOILÀ TON TITRE !
     st.title("Hacker Cosmic 1CA 2026")
-    st.subheader("Créé par Règne")
+    st.markdown("### Créé par **Règne**")
     st.write("---")
-    
-    p = st.number_input("Prix d'origine", value=460.0)
-    r = st.number_input("Remise (%)", value=10.0)
-    st.header(f"Total : {p * (1 - r/100):.2f} €")
+
+    # CALCULATEUR
+    p_orig = st.number_input("Prix d'origine (€)", value=460.0)
+    remise = st.number_input("Remise (%)", value=10.0)
+    st.header(f"Total : {p_orig * (1 - remise/100):.2f} €")
     
     st.write("---")
+
+    # LE DÉFI DU HACKER (EXERCICE AVEC SCORE)
     st.header("🎯 Défi du Hacker")
-    # Score et visites
+    if 'score' not in st.session_state: st.session_state.score = 0
+    if 'ex_p' not in st.session_state:
+        st.session_state.ex_p = random.randint(10, 500)
+        st.session_state.ex_r = random.randint(5, 50)
+        st.session_state.sol = st.session_state.ex_p * (1 - st.session_state.ex_r / 100)
+
+    st.write(f"**Score actuel : {st.session_state.score} ⭐**")
+    st.write(f"DÉFI : {st.session_state.ex_p}€ avec {st.session_state.ex_r}% de remise.")
+    ans = st.number_input("Ta réponse (€) :", key="ans_input", value=0.0)
+    
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button("Vérifier"):
+            if abs(ans - st.session_state.sol) < 0.1:
+                st.success("✅ GAGNÉ ! +1 Point")
+                st.session_state.score += 1
+                del st.session_state['ex_p']
+                st.rerun()
+            else:
+                st.error(f"❌ FAUX ! C'était {st.session_state.sol:.2f}€")
+                st.session_state.score = 0
+    with c2:
+        if st.button("Nouveau Défi 🔄"):
+            del st.session_state['ex_p']
+            st.rerun()
+
+    # COMPTEUR DE VISITES
     if 'v' not in st.session_state: st.session_state.v = 15
-    st.write(f"🔥 **{st.session_state.v} Hackers sur le site**")
+    st.session_state.v += 1
+    st.write(f"🔥 **{st.session_state.v} Hackers ont visité ce site !**")
