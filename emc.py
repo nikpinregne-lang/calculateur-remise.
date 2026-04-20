@@ -1,40 +1,48 @@
 import streamlit as st
 
-st.set_page_config(page_title="Double IA - Projet EMC", layout="wide")
+st.set_page_config(page_title="Projet EMC - Réseaux Sociaux", layout="centered")
 
-# --- MÉMOIRE DES CHATS ---
-if 'chat_cosmique' not in st.session_state:
-    st.session_state.chat_cosmique = []
-if 'chat_citoyen' not in st.session_state:
-    st.session_state.chat_citoyen = []
+# --- MÉMOIRE DU CHAT ---
+if 'messages' not in st.session_state:
+    st.session_state.messages = []
 
-st.title("🤖 Système Double IA : Cosmique & Citoyenne")
+# --- TITRE ET ARGUMENTATION (Ce qu'il y a sur ta feuille) ---
+st.title("📱 Les réseaux sociaux nous rendent-ils plus libres ou plus manipulables ?")
 
-# --- BOUTON EFFACER ---
-if st.sidebar.button("🗑️ EFFACER LES DISCUSSIONS"):
-    st.session_state.chat_cosmique = []
-    st.session_state.chat_citoyen = []
+st.markdown("""
+### 🧠 Question Philosophique
+**« Sommes-nous encore maîtres de nos choix face aux algorithmes ? »**
+
+### ⚖️ Les deux arguments clés :
+1. **La Liberté :** Un accès universel à la culture et une liberté d'expression sans précédent.
+2. **La Manipulation :** L'enfermement dans des "bulles de filtres" et l'influence des algorithmes sur nos opinions.
+
+---
+""")
+
+# --- LE CHATBOT CITOYEN ---
+st.header("🤖 Assistant Citoyen Éclairé")
+st.write("Posez une question sur l'influence des réseaux sociaux :")
+
+# Interface du chat
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+if prompt := st.chat_input("Ex: Est-ce que TikTok me manipule ?"):
+    # Ajouter le message de l'utilisateur
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # Réponse de l'IA (Analyse citoyenne)
+    reponse = f"Analyse de '{prompt}' : Attention, les algorithmes utilisent vos données pour vous montrer ce que vous voulez voir, ce qui peut limiter votre esprit critique."
+    st.session_state.messages.append({"role": "assistant", "content": reponse})
+    with st.chat_message("assistant"):
+        st.markdown(reponse)
+
+# --- BOUTON POUR TOUT EFFACER ---
+st.sidebar.title("Options")
+if st.sidebar.button("🗑️ Effacer la discussion"):
+    st.session_state.messages = []
     st.rerun()
-
-# --- EXPLICATION ---
-st.info("Utilisez ces deux IA pour comparer la liberté d'expression et la manipulation algorithmique.")
-
-col1, col2 = st.columns(2)
-
-with col1:
-    st.header("❄️ IA Cosmique")
-    q1 = st.text_input("Pose ta question :", key="ia1")
-    if st.button("ENVOYER (IA 1)"):
-        if q1:
-            st.session_state.chat_cosmique.append(f"👤: {q1}")
-            st.session_state.chat_cosmique.append(f"🤖: L'espace est vaste, tout comme ta liberté !")
-    for m in st.session_state.chat_cosmique: st.write(m)
-
-with col2:
-    st.header("📱 IA Citoyenne")
-    q2 = st.text_input("Demande une analyse :", key="ia2")
-    if st.button("ENVOYER (IA 2)"):
-        if q2:
-            st.session_state.chat_citoyen.append(f"👤: {q2}")
-            st.session_state.chat_citoyen.append(f"🤖: Attention, cet avis est peut-être influencé par un algorithme.")
-    for m in st.session_state.chat_citoyen: st.write(m)
