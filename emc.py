@@ -6,42 +6,47 @@ st.set_page_config(page_title="Projet EMC - Réseaux Sociaux", layout="centered"
 if 'messages' not in st.session_state:
     st.session_state.messages = []
 
-# --- TITRE ET ARGUMENTATION (Ce qu'il y a sur ta feuille) ---
-st.title("📱 Les réseaux sociaux nous rendent-ils plus libres ou plus manipulables ?")
+# --- TITRE ET ARGUMENTS COMPLETS ---
+st.title("📱 Les réseaux sociaux : Liberté ou Manipulation ?")
 
 st.markdown("""
 ### 🧠 Question Philosophique
 **« Sommes-nous encore maîtres de nos choix face aux algorithmes ? »**
 
 ### ⚖️ Les deux arguments clés :
-1. **La Liberté :** Un accès universel à la culture et une liberté d'expression sans précédent.
-2. **La Manipulation :** L'enfermement dans des "bulles de filtres" et l'influence des algorithmes sur nos opinions.
+
+1. **La Liberté (Émancipation Numérique) :**
+    *   **Accès Universel :** Les réseaux permettent à chacun d'accéder gratuitement à une infinité de savoirs et de cultures, brisant les barrières sociales.
+    *   **Liberté d'Expression :** Ils offrent une voix aux citoyens pour défendre des causes et créer des communautés d'entraide mondiales sans passer par les médias traditionnels.
+
+2. **La Manipulation (L'Invisibilité des Algorithmes) :**
+    *   **Bulles de Filtres :** Les algorithmes ne nous montrent que ce que nous aimons déjà. Cela enferme notre esprit critique dans une "chambre d'écho" où l'on n'entend plus d'avis contraires.
+    *   **Économie de l'Attention :** Les plateformes utilisent des mécanismes psychologiques (scroll infini, notifications) pour nous rendre dépendants et maximiser le profit publicitaire.
 
 ---
+### 🛡️ Solution Citoyenne
+*Développer son **esprit critique** et exiger la **transparence des algorithmes** pour redevenir acteur de sa vie numérique.*
 """)
 
 # --- LE CHATBOT CITOYEN ---
 st.header("🤖 Assistant Citoyen Éclairé")
 st.write("Posez une question sur l'influence des réseaux sociaux :")
 
-# Interface du chat
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if prompt := st.chat_input("Ex: Est-ce que TikTok me manipule ?"):
-    # Ajouter le message de l'utilisateur
+if prompt := st.chat_input("Ex: Est-ce que les algorithmes choisissent pour moi ?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Réponse de l'IA (Analyse citoyenne)
-    reponse = f"Analyse de '{prompt}' : Attention, les algorithmes utilisent vos données pour vous montrer ce que vous voulez voir, ce qui peut limiter votre esprit critique."
+    reponse = f"Analyse de '{prompt}' : C'est une question clé. L'algorithme cherche à prédire votre comportement. Pour rester libre, il faut varier ses sources d'information !"
     st.session_state.messages.append({"role": "assistant", "content": reponse})
     with st.chat_message("assistant"):
         st.markdown(reponse)
 
-# --- BOUTON POUR TOUT EFFACER ---
+# --- OPTIONS ---
 st.sidebar.title("Options")
 if st.sidebar.button("🗑️ Effacer la discussion"):
     st.session_state.messages = []
