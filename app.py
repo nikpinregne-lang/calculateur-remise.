@@ -71,7 +71,7 @@ elif "USA" in pays or "Canada" in pays or "Australie" in pays:
 # CHATBOT DANS LA SIDEBAR (TON CODE ORIGINAL)
 with st.sidebar:
     st.title("🤖 Chatbot 1CA")
-    st.write(f"Assistant de **Règne**")
+    st.write(f"Assistant de **HACKER COSMIC**")
     if "messages" not in st.session_state:
         st.session_state.messages = [{"role": "assistant", "content": "Wesh ! Demande-moi n'importe quoi."}]
     for m in st.session_state.messages:
@@ -90,7 +90,7 @@ with col_main:
 
     st.header(L["titre"])
     st.title("Hacker Cosmic 1CA 2026")
-    st.subheader("Créé par **Règne**")
+    st.subheader("Créé par *HACKER COSMIC**")
     st.write("---")
 
     # CALCULATEUR
