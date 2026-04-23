@@ -121,4 +121,4 @@ with col_main:
             st.error(f"❌ FAUX ! C'était {st.session_state.sol:.2f}€")
             st.session_state.score = 0
 
-    st.write(f"🔥 **{random.randint(25, 60)} Hackers ont visité ce site !**")
+    st.write(f"🔥 **{random.randint(25, 60)} Hackers actifs en ce moment dans ce site !**")
