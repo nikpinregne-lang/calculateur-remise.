@@ -1,53 +1,38 @@
 import streamlit as st
 
-st.set_page_config(page_title="Projet EMC - Réseaux Sociaux", layout="centered")
+st.set_page_config(page_title="Exposé EMC", layout="centered")
 
-# --- MÉMOIRE DU CHAT ---
-if 'messages' not in st.session_state:
-    st.session_state.messages = []
+# --- TITRE PRINCIPAL ---
+st.title("📱 Les réseaux sociaux nous rendent-ils plus libres ou plus manipulables ?")
+st.subheader("Étude de l'influence des algorithmes sur le citoyen")
 
-# --- TITRE ET ARGUMENTS COMPLETS ---
-st.title("📱 Les réseaux sociaux : Liberté ou Manipulation ?")
+st.divider()
 
+# --- QUESTION PHILOSOPHIQUE ---
 st.markdown("""
 ### 🧠 Question Philosophique
-**« Sommes-nous encore maîtres de nos choix face aux algorithmes ? »**
-
-### ⚖️ Les deux arguments clés :
-
-1. **La Liberté (Émancipation Numérique) :**
-    *   **Accès Universel :** Les réseaux permettent à chacun d'accéder gratuitement à une infinité de savoirs et de cultures, brisant les barrières sociales.
-    *   **Liberté d'Expression :** Ils offrent une voix aux citoyens pour défendre des causes et créer des communautés d'entraide mondiales sans passer par les médias traditionnels.
-
-2. **La Manipulation (L'Invisibilité des Algorithmes) :**
-    *   **Bulles de Filtres :** Les algorithmes ne nous montrent que ce que nous aimons déjà. Cela enferme notre esprit critique dans une "chambre d'écho" où l'on n'entend plus d'avis contraires.
-    *   **Économie de l'Attention :** Les plateformes utilisent des mécanismes psychologiques (scroll infini, notifications) pour nous rendre dépendants et maximiser le profit publicitaire.
-
----
-### 🛡️ Solution Citoyenne
-*Développer son **esprit critique** et exiger la **transparence des algorithmes** pour redevenir acteur de sa vie numérique.*
+**« Sommes-nous encore maîtres de nos choix face à des systèmes conçus pour anticiper nos désirs ? »**
 """)
 
-# --- LE CHATBOT CITOYEN ---
-st.header("🤖 Assistant Citoyen Éclairé")
-st.write("Posez une question sur l'influence des réseaux sociaux :")
+st.divider()
 
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+# --- LES ARGUMENTS CLÉS ---
+st.markdown("""
+### ⚖️ Les deux arguments clés :
 
-if prompt := st.chat_input("Ex: Est-ce que les algorithmes choisissent pour moi ?"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.markdown(prompt)
+#### 1. La Liberté (L’Émancipation Numérique)
+*   **Accès Universel au Savoir :** Les réseaux brisent les barrières géographiques et sociales. Tout le monde peut accéder gratuitement à une infinité de connaissances (tutoriels, cours, cultures).
+*   **Liberté d'Expression :** Ils offrent une voix aux citoyens sans passer par les médias traditionnels, permettant de défendre des causes importantes et de créer des communautés mondiales.
 
-    reponse = f"Analyse de '{prompt}' : C'est une question clé. L'algorithme cherche à prédire votre comportement. Pour rester libre, il faut varier ses sources d'information !"
-    st.session_state.messages.append({"role": "assistant", "content": reponse})
-    with st.chat_message("assistant"):
-        st.markdown(reponse)
+#### 2. La Manipulation (L’Invisibilité des Algorithmes)
+*   **Les Bulles de Filtres :** Pour maximiser notre temps de connexion, les algorithmes ne nous montrent que ce que nous aimons déjà. Cela affaiblit notre esprit critique et nous enferme dans nos propres certitudes.
+*   **L'Économie de l'Attention :** Les plateformes (TikTok, Instagram) utilisent des mécanismes psychologiques comme le "scroll infini" pour capter notre temps de cerveau disponible au profit des publicitaires.
+""")
 
-# --- OPTIONS ---
-st.sidebar.title("Options")
-if st.sidebar.button("🗑️ Effacer la discussion"):
-    st.session_state.messages = []
-    st.rerun()
+st.divider()
+
+# --- CONCLUSION & SOLUTION ---
+st.markdown("""
+### 🛡️ Solution Citoyenne
+Pour rester libre, le citoyen doit **développer son esprit critique**, varier ses sources d'information et exiger la **transparence des algorithmes** (Open Source) afin de redevenir acteur de sa vie numérique.
+""")
